@@ -32,6 +32,7 @@ public class MainWindowView extends JPanel {
 		
 	private void populateData() {
 		_boardGameController = new BoardGameController(_gamePanel);
+		_boardGameController.startPlayerSetup();
 	}
 	
 	/**

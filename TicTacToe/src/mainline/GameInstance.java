@@ -33,9 +33,6 @@ import mainline.controllers.LogsController;
 @SuppressWarnings("serial")
 public final class GameInstance extends JFrame {
 	
-	/**
-	 * The singleton game instance
-	 */
 	private static GameInstance _instance = null;
 
 	//TODO - Off-load this to the controller factory
@@ -44,21 +41,11 @@ public final class GameInstance extends JFrame {
 	 */
 	private ArrayList<Object> _controllers = new ArrayList<Object>();
 	
-	/**
-	 * The menu bar of the frame
-	 */
 	private JMenuBar _menu = new JMenuBar();
 	
 	//TODO - can we rid this and just reference it by name
-	/**
-	 * The playable position menu item reference
-	 * or event register this to an event
-	 */
 	JCheckBoxMenuItem _viewMenuShowPlayablePositions = null;
 	
-	/**
-	 * Constructs a new object of this class
-	 */
 	private GameInstance() {
 		// TODO - put this in config file
 		super("COMP 6721 W15 - Game of Ganji-Ho");
@@ -230,7 +217,7 @@ public final class GameInstance extends JFrame {
 	        		aButton.setSelected(false);
 	        		return;
 	        	}	   	
-	       		controller.populatePlayerGlobalGuides(aButton.getModel().isSelected());
+	       		//controller.populatePlayerGlobalGuides(aButton.getModel().isSelected());
 	        }	
         });
         _viewMenuShowPlayablePositions.setAccelerator(KeyStroke.getKeyStroke('P', Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));

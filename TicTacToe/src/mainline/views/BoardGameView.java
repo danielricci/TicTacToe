@@ -42,11 +42,6 @@ public class BoardGameView extends JPanel implements Observer {
 	private BoardGameController _controller = null;
 	
 	/**
-	 * The dialog box for setting up this view
-	 */
-	//private GameSetupDialog _dialog = null;
-
-	/**
 	 * The individual tile positions for this view
 	 */
 	private JPanel _gamePanel = new JPanel(new GridBagLayout());
@@ -282,10 +277,6 @@ public class BoardGameView extends JPanel implements Observer {
 					
 					// Get players identification
 					int player = _controller.getCurrentPlayerIdentification();
-					
-					if(!_controller.getPlayerHasAI(player)) {
-						return;
-					}
 					
 					// If the player can play and there is no selection yet
 					// then take ownership of the position and put our

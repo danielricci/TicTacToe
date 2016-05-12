@@ -1,20 +1,16 @@
 package mainline.controllers;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.UIManager;
 
 import mainline.GameInstance;
-import mainline.controls.PlayerSetupDialogBox;
 import mainline.models.PlayerModel;
 import mainline.models.PlayerModel.Team.Configuration;
 import mainline.views.BoardGameView;
@@ -33,8 +29,7 @@ public class BoardGameController implements ActionListener {
 	private Queue<PlayerModel> _turns = new LinkedList<PlayerModel>();
 	
 	private boolean _isGameOver = false;
-	private boolean _showAvailablePositionGuides = false;
-	
+
 	private BoardGameView _view = null;
 	
 	private int _gridSize = 0;
@@ -389,9 +384,6 @@ public class BoardGameController implements ActionListener {
 					_isGameOver = true;
 			    }
 			    
-			    if(_showAvailablePositionGuides) {
-			    	refreshGuides(root);
-			    }
 			    _turns.peek().refresh();
 			}
 		}
@@ -404,55 +396,7 @@ public class BoardGameController implements ActionListener {
 	private boolean getIsGameOver() {
 		return _isGameOver;
 	}
-
-	/**
-	 * Populates the positions background guides based on if the position is playable
-	 * 
-	 * @param show Show the helper guides or not since this is a toggle function
-	 */
-	public void populatePlayerGlobalGuides(boolean show) {
-		if(getIsGameOver()) {
-			return;
-		}
-		
-		_showAvailablePositionGuides = show;
-		if(!show) {
-			clearGuides(_view.getGamePanel());
-		} else {
-		    ArrayList<BoardPosition> positions = getAvailableBoardPositions(_view.getGamePanel());
-		    for(BoardPosition position : positions) {
-		    	position.setBackground(Color.LIGHT_GRAY);
-		    }
-		}
-	}	
 	
-	/**
-	 * Refreshes the guides after moves have been made
-	 * 
-	 * @param root The root of our game
-	 */
-	private void refreshGuides(JPanel root) {
-		if(_showAvailablePositionGuides) {
-			clearGuides(root);
-			populatePlayerGlobalGuides(true);
-		}
-	}
-	
-	/**
-	 * Clears the guides
-	 * 
-	 * @param root The root of our game
-	 */
-	private void clearGuides(JPanel root) {
-		Component[] components = root.getComponents();
-	    for (int i = 0; i < components.length; i++) {
-	    	if(components[i] instanceof BoardPosition) {
-	    		BoardPosition position = (BoardPosition) components[i];
-	    		position.setBackground(UIManager.getColor("Panel.background"));
-	    	}	
-	    }	
-	}
-
 	/**
 	 * Gets if the player is done playing
 	 * 
@@ -469,39 +413,6 @@ public class BoardGameController implements ActionListener {
 		return false;
 	}
 
-	/**
-	 * Gets the setup representation of our players
-	 * 
-	 * @return The setup representation of our players
-	 */
-	/*
-	public PlayerSetupDialogBox[] getPlayersSetup() {
-		PlayerSetupDialogBox[] players = new PlayerSetupDialogBox[_players.length];
-		for(int i = 0; i < players.length; ++i) {
-			players[i] = _players[i].getPlayerSetup();
-		}
-		return players;
-	}
-*/
-	
-	/**
-	 * Gets the setup representation of a single player
-	 * 
-	 * @param pID The players identification
-	 * 
-	 * @return The player setup
-	 */
-	/*
-	public PlayerSetupDialogBox getPlayerSetup(int pID) {
-		PlayerSetupDialogBox[] players = getPlayersSetup();
-		for(PlayerSetupDialogBox player : players) {
-			if(player.getPID() == pID) {
-				return player;
-			}
-		}
-		return null;
-	}
-*/
 	
 	/**
 	 * Gets the tokens of the player
@@ -515,50 +426,5 @@ public class BoardGameController implements ActionListener {
 			return _turns.peek().getTokens(); 
 		}
 		return 0;
-	}
-	
-	/*
-	private ArrayList<BoardPosition> populateNeighbouringPositions(BoardPosition position, Configuration configuration) {
-	
-		ArrayList<BoardPosition> positions = new ArrayList<BoardGameView.BoardPosition>();
-		if(position != null && configuration != null) {
-			if(configuration == Configuration.ROW) {
-				positions.add(position.getNeighbourLeft());
-				positions.add(position.getNeighbourRight());
-			} else if(configuration == Configuration.COLUMN) {
-				positions.add(position.getNeighbourTop());
-				positions.add(position.getNeighbourBottom());				
-			}
-		}
-		return positions;
-	}
-	*/
-	public void populatePlayerLocalGuides(BoardPosition position) {
-
-		return;/*
-		PlayerModel player =  _turns.peek();
-		
-		if(player != null && position != null && position.getOwner() == player.getPlayerIdentification()) {	
-			ArrayList<BoardPosition> children = populateNeighbouringPositions(position, player.getPlayerConfiguration());
-			if(children != null) {
-				
-				ArrayList<BoardPosition> availablePositions = getAvailableBoardPositions((JPanel)position.getParent());
-				for(BoardPosition child : children) {
-					if(child != null && availablePositions.contains(child)) {
-						Border border = child.getBorder();
-						if(border instanceof MatteBorder) {
-							Insets insets = ((MatteBorder)border).getBorderInsets();
-							child.setBorder(new MatteBorder(
-									insets.top,
-									insets.left,
-									insets.bottom,
-									insets.right,
-									Color.RED));
-						}
-					}
-				}
-			}
-			*/
-		//}
 	}
 }
