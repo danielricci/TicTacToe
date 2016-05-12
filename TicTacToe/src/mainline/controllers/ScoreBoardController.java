@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import mainline.GameInstance;
-import mainline.controls.PlayerSetupDialogBox;
+import mainline.components.PlayerSetupDialogBox;
 import mainline.models.PlayerModel;
 import mainline.views.ScoreBoardView;
 

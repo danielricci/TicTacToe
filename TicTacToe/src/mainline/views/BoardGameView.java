@@ -25,7 +25,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
 
 import mainline.controllers.BoardGameController;
-import mainline.controls.GameSetupDialog;
 
 /**
  * The view that authors the visual representation of the board and its components
@@ -83,22 +82,6 @@ public class BoardGameView extends JPanel implements Observer {
 	public boolean showPlayerDialog() {
 		_controller.createPlayers();
 		return true;
-		
-		
-		// Create and populate the dialog
-		//_dialog = new GameSetupDialog();
-		//_dialog.populateData();
-		
-		// If the dialog is done being used then validate it 
-		// and load the game accordingly
-		//boolean valid = _dialog.isDialogDone();
-		//if(valid) {
-			//_controller.createPlayers(_dialog.getPlayerSetup());
-		//}
-	
-		// Dispose the view and return its result
-		//_dialog.dispose();
-		//return valid;		
 	}
 	
 	/**
@@ -284,6 +267,8 @@ public class BoardGameView extends JPanel implements Observer {
 					if(_image == null && _controller.isValidPosition(position)) {
 						_pID = player; // take ownership	
 							try {
+								System.out.println(System.getProperty("java.class.path"));
+								System.out.println(_controller.getPlayerToken());
 								_image = new ImageIcon(position.getClass().getResource(_controller.getPlayerToken())).getImage();
 								_controller.updatePlayerTokens(-1);
 							} catch (Exception e1) {

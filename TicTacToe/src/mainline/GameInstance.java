@@ -1,5 +1,6 @@
 package mainline;
 
+
 import java.awt.Desktop;
 import java.awt.Frame;
 import java.awt.Toolkit;
@@ -20,8 +21,8 @@ import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
 import mainline.controllers.BoardGameController;
-import mainline.controllers.MainWindowController;
 import mainline.controllers.LogsController;
+import mainline.controllers.MainWindowController;
 
 /**
  * @author Daniel Ricci <thedanny09@gmail.com>

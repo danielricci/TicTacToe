@@ -12,8 +12,8 @@ import javax.swing.JPanel;
 import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 
+import mainline.components.PlayerSetupDialogBox;
 import mainline.controllers.ScoreBoardController;
-import mainline.controls.PlayerSetupDialogBox;
 import mainline.globals.SpringUtilities;
 
 /**

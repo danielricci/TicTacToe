@@ -1,4 +1,4 @@
-package mainline.controls;
+package mainline.components;
 
 import java.awt.Container;
 import java.awt.event.ActionEvent;

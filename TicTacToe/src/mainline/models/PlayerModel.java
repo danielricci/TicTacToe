@@ -3,8 +3,6 @@ package mainline.models;
 import java.awt.Color;
 import java.util.Observable;
 
-import mainline.controls.PlayerSetupDialogBox;
-
 /**
  * 
  * The model that represents a player, used as an observable
@@ -24,7 +22,7 @@ public class PlayerModel extends Observable implements Comparable<PlayerModel> {
 	
 	private Team _team = null; 
 
-	private String _tokenPath = "_peg.png";
+	private String _tokenPath = "/resources";
 	private String _name = null;
 		
 	/**
@@ -116,7 +114,7 @@ public class PlayerModel extends Observable implements Comparable<PlayerModel> {
 		}
 
 		// Loads the token path
-		_tokenPath = "/" + _team.name().toLowerCase() + _tokenPath;
+		_tokenPath += "/" + _team.name().toLowerCase() + "_peg.png";
 	}
 	
 	/**
