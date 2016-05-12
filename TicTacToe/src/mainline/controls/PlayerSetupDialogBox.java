@@ -66,7 +66,6 @@ public class PlayerSetupDialogBox {
 		// Ensures that we are working with a clean list 
 		// because of its static nature
 		_gridSizes.removeAllItems();
-		
 		for(int i = min; i <= max; ++i) {
 			_gridSizes.addItem(String.valueOf(i));
 		}

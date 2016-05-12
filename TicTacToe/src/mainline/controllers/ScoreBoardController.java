@@ -66,7 +66,7 @@ public class ScoreBoardController implements ActionListener {
 	 * Populates the players
 	 */
 	private void populatePlayers() {
-		_players = _controller.getPlayersSetup();
+		//_players = _controller.getPlayersSetup();
 	}
 	
 	/**

@@ -15,49 +15,18 @@ import mainline.controls.PlayerSetupDialogBox;
  */
 public class PlayerModel extends Observable implements Comparable<PlayerModel> {
 	
-	/**
-	 * The identification number of this player
-	 */
-	private int _pID = 0;
-	
-	/**
-	 * The name of the player
-	 */
-	private String _name = null;
-	
-	/**
-	 * The Team of this player
-	 */
-	private Team _team = null; 
-	
-	/**
-	 * If this player has AI
-	 */
+	private static final int _totalTokens = 2;
+	private static int playerIdentifiers = 1;
+
+	private int _pID = 0;	
+	private int _tokens = _totalTokens;	
 	private boolean _hasAI = false;
 	
-	/**
-	 * The token path of this player
-	 */
+	private Team _team = null; 
+
 	private String _tokenPath = "_peg.png";
-	
-	/**
-	 * The maximum allowed number of tokens for a player
-	 */
-	private static final int _totalTokens = 2;
-	
-	/**
-	 * The tokens that this player currently has
-	 */
-	private int _tokens = _totalTokens;
-	
-	/**
-	 * The global identification counter
-	 */
-	private static int playerIdentifiers = 1;
-	
-	
-	private PlayerSetupDialogBox _playerSetup = null;
-	
+	private String _name = null;
+		
 	/**
 	 * The players team representation
 	 * 
@@ -126,15 +95,6 @@ public class PlayerModel extends Observable implements Comparable<PlayerModel> {
 	}
 	
 	/**
-	 * Gets the player setup
-	 * 
-	 * @return The player setup
-	 */
-	public PlayerSetupDialogBox getPlayerSetup() {
-		return _playerSetup;
-	}
-	
-	/**
 	 * Gets the players identification number
 	 * 
 	 * @return The players identification number
@@ -143,30 +103,19 @@ public class PlayerModel extends Observable implements Comparable<PlayerModel> {
 		return _pID;
 	}
 	
-	/**
-	 * Constructs a new object of this class
-	 * 
-	 * @param playerSetup The players setup
-	 */
-	public PlayerModel(PlayerSetupDialogBox playerSetup) {
+	public PlayerModel(String name, String team) {
 		
+		_name = name;
+		_team = Team.valueOf(team.toUpperCase());
 		
-		// Setup the initial player values
-		_name = playerSetup.getName();
-		_team = Team.valueOf(playerSetup.getTeam());
-		_hasAI = playerSetup.getHasAI();
-		
-		// Setup the team of the player
+		// Setup the identification of the player
 		if(_team == Team.WHITE) {
 			_pID = 1;
 		} else {
 			_pID = ++playerIdentifiers;
 		}
-		
-		_playerSetup = playerSetup;
-		_playerSetup.setPID(_pID);
-		
-		// Setup the token path
+
+		// Loads the token path
 		_tokenPath = "/" + _team.name().toLowerCase() + _tokenPath;
 	}
 	

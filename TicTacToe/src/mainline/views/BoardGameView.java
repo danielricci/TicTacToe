@@ -25,7 +25,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
 
 import mainline.controllers.BoardGameController;
-import mainline.dialogs.GameSetupDialog;
+import mainline.controls.GameSetupDialog;
 
 /**
  * The view that authors the visual representation of the board and its components
@@ -44,7 +44,7 @@ public class BoardGameView extends JPanel implements Observer {
 	/**
 	 * The dialog box for setting up this view
 	 */
-	private GameSetupDialog _dialog = null;
+	//private GameSetupDialog _dialog = null;
 
 	/**
 	 * The individual tile positions for this view
@@ -86,21 +86,24 @@ public class BoardGameView extends JPanel implements Observer {
 	 * @return If the dialog is finished
 	 */
 	public boolean showPlayerDialog() {
+		_controller.createPlayers();
+		return true;
+		
 		
 		// Create and populate the dialog
-		_dialog = new GameSetupDialog();
-		_dialog.populateData();
+		//_dialog = new GameSetupDialog();
+		//_dialog.populateData();
 		
 		// If the dialog is done being used then validate it 
 		// and load the game accordingly
-		boolean valid = _dialog.isDialogDone();
-		if(valid) {
-			_controller.createPlayers(_dialog.getPlayerSetup());
-		}
-		
+		//boolean valid = _dialog.isDialogDone();
+		//if(valid) {
+			//_controller.createPlayers(_dialog.getPlayerSetup());
+		//}
+	
 		// Dispose the view and return its result
-		_dialog.dispose();
-		return valid;
+		//_dialog.dispose();
+		//return valid;		
 	}
 	
 	/**

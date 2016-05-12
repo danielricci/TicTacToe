@@ -1,4 +1,4 @@
-package mainline.dialogs;
+package mainline.controls;
 
 import java.awt.Container;
 import java.awt.event.ActionEvent;
@@ -15,7 +15,6 @@ import javax.swing.JPanel;
 import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 
-import mainline.controls.PlayerSetupDialogBox;
 import mainline.globals.SpringUtilities;
 import mainline.models.PlayerModel;
 

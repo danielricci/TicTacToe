@@ -29,38 +29,14 @@ import mainline.views.BoardGameView.BoardPosition;
  */
 public class BoardGameController implements ActionListener {
 	
-	/**
-	 * The player models for this controller
-	 */
-	private PlayerModel[] _players = null;
-	
-	/**
-	 * The queue of references to manage the players turns
-	 */
+	private ArrayList<PlayerModel> _players = new ArrayList<PlayerModel>();	
 	private Queue<PlayerModel> _turns = new LinkedList<PlayerModel>();
 	
-	/**
-	 * Flag indicating if the game is over
-	 */
 	private boolean _isGameOver = false;
-	
-	/**
-	 * The view that this controller represents
-	 */
-	private BoardGameView _view = null;
-	
-	/**
-	 * Flag indicating if the available position guide show be enabled
-	 */
-	// TODO - can we not have this and just have the menu contact the method directly
-	// perhaps through chaining
 	private boolean _showAvailablePositionGuides = false;
 	
-	/**
-	 * Represents the grid size of our board
-	 */
-	// TODO - do we need this or can we create a model like a BoardModel that holds
-	// attributes relevant to the board
+	private BoardGameView _view = null;
+	
 	private int _gridSize = 0;
 		
 	/**
@@ -100,11 +76,9 @@ public class BoardGameController implements ActionListener {
 		return _turns.peek().getPlayerConfiguration().toString();
 	}
 	
-	/**
-	 * Creates the player models based on the player dialog box
-	 * 
-	 * @param players The list of players from the dialog control
-	 */
+	/*
+	// TODO - Delete this, and don't let the view and controller 
+	// be capable of communicating like this
 	public void createPlayers(PlayerSetupDialogBox[] players) {
 		_players = new PlayerModel[players.length];
 		for(int i = 0; i < players.length; ++i) {
@@ -119,9 +93,24 @@ public class BoardGameController implements ActionListener {
 		for(PlayerModel player : _players) {
 			_turns.add(player);
 		}
-		
+	
 		// Set the grid size for this game to be played on
 		_gridSize = PlayerSetupDialogBox.getGridSize();
+	}
+	*/
+	
+	public void createPlayers() {
+		// TODO - this could be read from config XML
+		_players.clear();
+		_players.add(new PlayerModel("", "White"));
+		_players.add(new PlayerModel("", "Black"));
+		
+		// TODO - X goes first?
+		for(PlayerModel player : _players) {
+			_turns.add(player);
+		}
+
+		_gridSize = 3;	
 	}
 	
 	/**
@@ -485,6 +474,7 @@ public class BoardGameController implements ActionListener {
 	 * 
 	 * @return The setup representation of our players
 	 */
+	/*
 	public PlayerSetupDialogBox[] getPlayersSetup() {
 		PlayerSetupDialogBox[] players = new PlayerSetupDialogBox[_players.length];
 		for(int i = 0; i < players.length; ++i) {
@@ -492,6 +482,7 @@ public class BoardGameController implements ActionListener {
 		}
 		return players;
 	}
+*/
 	
 	/**
 	 * Gets the setup representation of a single player
@@ -500,6 +491,7 @@ public class BoardGameController implements ActionListener {
 	 * 
 	 * @return The player setup
 	 */
+	/*
 	public PlayerSetupDialogBox getPlayerSetup(int pID) {
 		PlayerSetupDialogBox[] players = getPlayersSetup();
 		for(PlayerSetupDialogBox player : players) {
@@ -509,6 +501,7 @@ public class BoardGameController implements ActionListener {
 		}
 		return null;
 	}
+*/
 	
 	/**
 	 * Gets the tokens of the player
