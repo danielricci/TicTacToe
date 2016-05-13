@@ -401,7 +401,7 @@ public class BoardGameView extends JPanel implements Observer {
 	        hints.put(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 	        hints.put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 	        g2d.addRenderingHints(hints);
-	        g2d.drawString(_coordinate, 4, 12);
+	        //g2d.drawString(_coordinate, 4, 12);
 	        g2d.drawImage(_image, 16, 16, 32, 32, null, null);       
 		}
 		
