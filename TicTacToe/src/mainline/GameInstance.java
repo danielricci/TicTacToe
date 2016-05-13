@@ -49,7 +49,7 @@ public final class GameInstance extends JFrame {
 	
 	private GameInstance() {
 		// TODO - put this in config file
-		super("COMP 6721 W15 - Game of Ganji-Ho");
+		super("Tic-Tac-Toe");
 		setExtendedState(Frame.MAXIMIZED_BOTH);
 		SetWindowedInstanceListeners();
 		SetWindowedInstanceMenu();
@@ -137,8 +137,7 @@ public final class GameInstance extends JFrame {
 	 */
 	private void SetWindowedInstanceMenu() {
 		 PopulateFileMenu(_menu);
-		 PopulateViewMenu(_menu);
-		 PopulateHelpMenu(_menu);
+		 PopulateOptionsMenu(_menu);
 		 setJMenuBar(_menu);
 	}
 	
@@ -197,65 +196,21 @@ public final class GameInstance extends JFrame {
         menu.add(fileMenu);
 	}	
 	
-	/**
-	 * Populates the view menu
-	 * 
-	 * @param menu The menu to attach to
-	 */
-	private void PopulateViewMenu(JMenuBar menu) {
+	private void PopulateOptionsMenu(JMenuBar menu) {
 		// Create the file menu 
-		JMenu viewMenu = new JMenu("View");
-        viewMenu.setMnemonic('V');
+		JMenu optionsMenu = new JMenu("Options");
+		optionsMenu.setMnemonic('O');
         
         // Set the event handler
-        _viewMenuShowPlayablePositions = new JCheckBoxMenuItem(new AbstractAction("Show Playable Positions") {
+        JMenuItem optionsMenuRepository = new JMenuItem(new AbstractAction("Reset Score") {
         	
         	@Override
 			public void actionPerformed(ActionEvent event) {
-				AbstractButton aButton = (AbstractButton) event.getSource();		        
-	        	BoardGameController controller = (BoardGameController)getController(BoardGameController.class.getName());
-	        	if(controller == null) {
-	        		aButton.setSelected(false);
-	        		return;
-	        	}	   	
-	       		//controller.populatePlayerGlobalGuides(aButton.getModel().isSelected());
-	        }	
-        });
-        _viewMenuShowPlayablePositions.setAccelerator(KeyStroke.getKeyStroke('P', Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
-        viewMenu.add(_viewMenuShowPlayablePositions);
-        
-        menu.add(viewMenu);
-	}
-
-	/**
-	 * Populates the help menu
-	 * 
-	 * @param menu The menu to attach to
-	 */
-	private void PopulateHelpMenu(JMenuBar menu) {
-		// Create the file menu 
-		JMenu helpMenu = new JMenu("Help");
-        helpMenu.setMnemonic('H');
-        
-        // Set the event handler
-        JMenuItem helpMenuRepository = new JMenuItem(new AbstractAction("Repository") {
-        	
-        	@Override
-			public void actionPerformed(ActionEvent event) {
-				Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
-			    if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
-			        try {
-			        	// TODO - get this value from the Config file
-			            desktop.browse(new URI("https://github.com/danielricci/comp472_6721"));
-			        } catch (Exception e) {
-			            e.printStackTrace();
-			        }
-			    }
+    			System.out.println("TODO - Implement Reset Score");
 			}	
         });
-        helpMenuRepository.setAccelerator(KeyStroke.getKeyStroke('R', Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
-        helpMenu.add(helpMenuRepository);
+        optionsMenu.add(optionsMenuRepository);
         
-        menu.add(helpMenu);
+        menu.add(optionsMenu);
 	}
 }
