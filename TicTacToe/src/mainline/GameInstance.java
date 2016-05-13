@@ -46,6 +46,12 @@ public final class GameInstance extends JFrame {
 		setResizable(false);
 		setMaximumSize(getSize());
 		
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		setLocation(
+			(int)screenSize.getWidth() / 2 - getSize().width / 2,
+			(int)screenSize.getHeight() / 2 - getSize().height / 2
+		);
+
 		SetWindowedInstanceListeners();
 		SetWindowedInstanceMenu();
 	}
