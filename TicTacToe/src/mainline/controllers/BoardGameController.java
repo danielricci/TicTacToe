@@ -1,5 +1,6 @@
 package mainline.controllers;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -267,29 +268,16 @@ public class BoardGameController implements ActionListener {
 	 * @param root The game panel
 	 */
 	public void performMove(JPanel root) {
-		/*
+		
 		// Make sure the game isn't finished before proceeding
 		if(getIsGameOver()) {
 			return;
 		}
+	    
+		// Swap to the next player
+		nextPlayer();
 		
-		
-		
-		
-		PlayerModel player = _turns.peek();
-		if(player != null) {
-			
-		    Component[] components = root.getComponents();
-		    for (int i = 0; i < components.length; i++) {
-		    	if(components[i] instanceof BoardPosition) {
-		    		BoardPosition position = (BoardPosition) components[i];
-		    		if(position.getOwner() == player.getPlayerIdentification()) {
-		    			position.finalize();
-		    		}
-		    	}	
-		    }	
-		  
-			    nextPlayer();
+	    /*
 			    ArrayList<BoardPosition> positions = getAvailableBoardPositions(root);
 			    if(positions.size() == 0) {
 			    	GameInstance.getInstance().addLog("Player " + _turns.peek().getName() + " has lost the game because there are no more moves left");

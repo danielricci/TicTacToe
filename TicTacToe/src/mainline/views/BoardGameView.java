@@ -21,7 +21,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
-import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
 
 import mainline.controllers.BoardGameController;
@@ -139,9 +138,6 @@ public class BoardGameView extends JPanel implements Observer {
 	    // Add our panels
 		add(_gamePanel);
 		add(_actionPanel);
-		
-		// Some resize features margins
-		setBorder(new EmptyBorder(25, 125, 25, 0));		
 	}	
 	
 	/**
@@ -152,51 +148,15 @@ public class BoardGameView extends JPanel implements Observer {
 	 */
 	public class BoardPosition extends JPanel {
 
-		/**
-		 * The image for this position
-		 */
 	    private Image _image = null;
-	    
-	    /**
-	     * The coordinate of this black position
-	     */
-	    private String _coordinate = null;
-	    
-	    /**
-	     * The players id associated to this position
-	     */
-	    private int _pID = 0;
-	    
-	    /**
-	     * Flag indicating if this position is locked
-	     */
+	    private int _pID = 0;	    
 	    private boolean _isLocked = false;
-	    
-	    /**
-	     * Reference to the left neighbor of this position
-	     */
 	    private BoardPosition _left = null;
-	    
-		/**
-		 * Reference to the top neighbor of this position
-		 */
 	    private BoardPosition _top = null;
-	    
-	    /**
-	     * Reference to the right neighbor of this position
-	     */
 	    private BoardPosition _right = null;
-	    
-		/**
-		 * Reference to the bottom neighbor of this position
-		 */
 	    private BoardPosition _bottom = null;	    
 	    
-	    /**
-	     * Constructs a new object of this class
-	     */
 	    public BoardPosition(String coordinate) {	
-	    	_coordinate = coordinate;
 	    	
 	    	addMouseListener(new MouseAdapter() { 
 	    		
@@ -220,45 +180,24 @@ public class BoardGameView extends JPanel implements Observer {
 	    		@Override
 				public void mouseClicked(MouseEvent e) {
 					
-					// Get the board that we selected to give our event
-					// handler some context
+					// Get the board that we selected to give our event handler some context
 					BoardPosition position = (BoardPosition)e.getSource();
 					if(position._isLocked) {
 						return;
 					}
 
-					// Check if it is part of the available positions to be used, to avoid
-					// players putting at least one item into a position that wont yield other
-					// valid positions
-					//if(!_controller.getAvailableBoardPositions(_gamePanel).contains(position)) {
-					//	return;
-					//}
-					
-					// Get players identification
-					//int player = _controller.getCurrentPlayerIdentification();
-					
 					// If the player can play and there is no selection yet
-					// then take ownership of the position and put our
-					// token
-					if(_image == null && _controller.isValidPosition(position)) {
-						//_pID = player; // take ownership	
-							try {
-								System.out.println(System.getProperty("java.class.path"));
-								System.out.println(_controller.getPlayerToken());
-								_image = new ImageIcon(position.getClass().getResource(_controller.getPlayerToken())).getImage();
-								//_controller.updatePlayerTokens(-1);
-							} catch (Exception e1) {
-								e1.printStackTrace();
-							}
-					} else {
-						// If we own the position then just refund it
-						// and reset its availability
-						//if(_pID == player) {
-						//	_controller.updatePlayerTokens(1);
-						//	position.reset();
-						//}
+					// then take ownership of the position and put our token
+					if(_image == null) {
+						try {
+							System.out.println(System.getProperty("java.class.path"));
+							System.out.println(_controller.getPlayerToken());
+							_image = new ImageIcon(position.getClass().getResource(_controller.getPlayerToken())).getImage();
+							_controller.performMove(_gamePanel);
+						} catch (Exception e1) {
+							e1.printStackTrace();
+						}
 					}
-					//_controller.populatePlayerLocalGuides(position);
 					position.repaint();
 				}
 			});
