@@ -1,18 +1,13 @@
 package mainline;
 
-
-import java.awt.Desktop;
 import java.awt.Frame;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.net.URI;
 import java.util.ArrayList;
 
 import javax.swing.AbstractAction;
-import javax.swing.AbstractButton;
-import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -20,8 +15,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
-import mainline.controllers.BoardGameController;
-import mainline.controllers.LogsController;
 import mainline.controllers.MainWindowController;
 
 /**
@@ -43,9 +36,6 @@ public final class GameInstance extends JFrame {
 	private ArrayList<Object> _controllers = new ArrayList<Object>();
 	
 	private JMenuBar _menu = new JMenuBar();
-	
-	//TODO - can we rid this and just reference it by name
-	JCheckBoxMenuItem _viewMenuShowPlayablePositions = null;
 	
 	private GameInstance() {
 		// TODO - put this in config file
@@ -84,22 +74,6 @@ public final class GameInstance extends JFrame {
 		return null;
 	}
 	
-	// TODO - this should go into the configuration area
-	// TODO - fetch from the factory controller
-	/**
-	 * Adds a log text to the log controller
-	 * 
-	 * @param text The text to add
-	 */
-	public void addLog(String text) {
-		if(text != null) {
-			Object controller = getController(LogsController.class.getName());
-			if(controller instanceof LogsController) {
-				((LogsController) controller).addLog(text);
-			}
-		}
-	}
-
 	/**
 	 * Gets the the singleton instance of this class
 	 * 
@@ -159,10 +133,7 @@ public final class GameInstance extends JFrame {
         	public void actionPerformed(ActionEvent event) {	
         		int response= JOptionPane.showConfirmDialog(null, "Starting a new game will cancel any current game in progress, are you sure?", "New Game", JOptionPane.YES_NO_OPTION);
 				if(response == JOptionPane.YES_OPTION) {
-					
-					// Reset our guidelines option
-					_viewMenuShowPlayablePositions.setSelected(false);
-					
+								
 	        		// Clears all references to our controller that this
 	        		// instance may hold
 	        		_controllers.clear();
