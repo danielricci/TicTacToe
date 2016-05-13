@@ -20,6 +20,7 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
@@ -222,24 +223,22 @@ public class BoardGameView extends JPanel implements Observer {
 	    	
 	    	addMouseListener(new MouseAdapter() { 
 	    		
-	    		/*
-	    		@Override 
-	    		public void mouseEntered(MouseEvent e) {
+	    		@Override public void mouseEntered(MouseEvent e) {
 	    			Object source = e.getSource();
 	    			if(source instanceof BoardPosition) {
 	    				BoardPosition position = (BoardPosition)source;
-	    				position.setBackground(Color.darkGray);	
+	    				position.setBackground(Color.LIGHT_GRAY);	
 	    			}
 	    		}
 	    		
-	    		@Override
-	    		public void mouseExited(MouseEvent e) {
+	    		
+	    		@Override public void mouseExited(MouseEvent e) {
 	    			Object source = e.getSource();
 	    			if(source instanceof BoardPosition) {
 	    				BoardPosition position = (BoardPosition)source;
 	    				position.setBackground(UIManager.getColor("Panel.background"));	
 	    			}
-	    		}*/
+	    		}
 	    		
 	    		@Override
 				public void mouseClicked(MouseEvent e) {
