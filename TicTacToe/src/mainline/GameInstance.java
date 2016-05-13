@@ -1,6 +1,7 @@
 package mainline;
 
-import java.awt.Frame;
+import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
@@ -40,7 +41,11 @@ public final class GameInstance extends JFrame {
 	private GameInstance() {
 		// TODO - put this in config file
 		super("Tic-Tac-Toe");
-		setExtendedState(Frame.MAXIMIZED_BOTH);
+		setSize(new Dimension(400, 400));
+		setMaximizedBounds(new Rectangle(getSize()));
+		setResizable(false);
+		setMaximumSize(getSize());
+		
 		SetWindowedInstanceListeners();
 		SetWindowedInstanceMenu();
 	}
