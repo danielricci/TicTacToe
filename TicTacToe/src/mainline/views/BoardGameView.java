@@ -18,7 +18,6 @@ import java.util.Observable;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
@@ -52,20 +51,10 @@ public class BoardGameView extends JPanel implements Observer {
 	private JPanel _actionPanel = new JPanel();
 	
 	/**
-	 * The action panel button used to perform a move
-	 */
-	private JButton _playMove = new JButton("Perform Move");
-	
-	/**
 	 * Constructs a new object of this class
 	 */
-	public BoardGameView() {
-		
-		// set the layout of this view
+	public BoardGameView() {	
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-
-		// By default the button is not enabled
-    	_playMove.setEnabled(false);
 	}
 
 	/**
@@ -147,19 +136,7 @@ public class BoardGameView extends JPanel implements Observer {
 			}
 			positions.add(rowPositions);
 		}
-	    
-		// Add to our panel the play move button and
-		// set up its action event
-		_actionPanel.add(_playMove);
-		_playMove.addMouseListener(new MouseAdapter() {
-			
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				_controller.performMove(_gamePanel);
-			}
-		});
-		
-		// Add our panels
+	    // Add our panels
 		add(_gamePanel);
 		add(_actionPanel);
 		
