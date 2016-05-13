@@ -48,7 +48,7 @@ public class ScoreBoardController implements ActionListener {
 	 * @return The maximum tokens that the players can have
 	 */
 	public int getPlayersMaxTokens() {
-		return PlayerModel.maxToken();
+		return 1;
 	}
 	
 	/**
@@ -59,7 +59,7 @@ public class ScoreBoardController implements ActionListener {
 	 * @return The number of tokens that the player is holding
 	 */
 	public int getPlayersTokens(int pID) {
-		return _controller.getPlayerTokens(pID);
+		return 0;//return _controller.getPlayerTokens(pID);
 	}
 	
 	/**

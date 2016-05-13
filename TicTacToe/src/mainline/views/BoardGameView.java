@@ -254,33 +254,33 @@ public class BoardGameView extends JPanel implements Observer {
 					// Check if it is part of the available positions to be used, to avoid
 					// players putting at least one item into a position that wont yield other
 					// valid positions
-					if(!_controller.getAvailableBoardPositions(_gamePanel).contains(position)) {
-						return;
-					}
+					//if(!_controller.getAvailableBoardPositions(_gamePanel).contains(position)) {
+					//	return;
+					//}
 					
 					// Get players identification
-					int player = _controller.getCurrentPlayerIdentification();
+					//int player = _controller.getCurrentPlayerIdentification();
 					
 					// If the player can play and there is no selection yet
 					// then take ownership of the position and put our
 					// token
 					if(_image == null && _controller.isValidPosition(position)) {
-						_pID = player; // take ownership	
+						//_pID = player; // take ownership	
 							try {
 								System.out.println(System.getProperty("java.class.path"));
 								System.out.println(_controller.getPlayerToken());
 								_image = new ImageIcon(position.getClass().getResource(_controller.getPlayerToken())).getImage();
-								_controller.updatePlayerTokens(-1);
+								//_controller.updatePlayerTokens(-1);
 							} catch (Exception e1) {
 								e1.printStackTrace();
 							}
 					} else {
 						// If we own the position then just refund it
 						// and reset its availability
-						if(_pID == player) {
-							_controller.updatePlayerTokens(1);
-							position.reset();
-						}
+						//if(_pID == player) {
+						//	_controller.updatePlayerTokens(1);
+						//	position.reset();
+						//}
 					}
 					//_controller.populatePlayerLocalGuides(position);
 					position.repaint();
@@ -414,7 +414,7 @@ public class BoardGameView extends JPanel implements Observer {
 	
 	@Override
 	public void update(Observable obs, Object object) 
-	{ 
+	{ /*
 		// Update the action button if the player has spent all tokens
 		if(object instanceof Integer)
 		{
@@ -427,7 +427,7 @@ public class BoardGameView extends JPanel implements Observer {
 					_playMove.setEnabled(_controller.isPlayerDone(pID));	
 				}
 			}
-		}
+		}*/
 	}		
 		
 	/**

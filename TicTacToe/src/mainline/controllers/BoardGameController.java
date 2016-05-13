@@ -1,18 +1,16 @@
 package mainline.controllers;
 
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import mainline.GameInstance;
 import mainline.models.PlayerModel;
-import mainline.models.PlayerModel.Team.Configuration;
+import mainline.models.PlayerModel.Team;
 import mainline.views.BoardGameView;
 import mainline.views.BoardGameView.BoardPosition;
 
@@ -61,44 +59,11 @@ public class BoardGameController implements ActionListener {
 		GameInstance.getInstance().registerController(this);
 	}
 	
-	/**
-	 * Gets the current players configuration
-	 * 
-	 * @return The current players configuration, such as if its
-	 * a row or column configuration
-	 */
-	public String getCurrentPlayerConfig() {
-		return _turns.peek().getPlayerConfiguration().toString();
-	}
-	
-	/*
-	// TODO - Delete this, and don't let the view and controller 
-	// be capable of communicating like this
-	public void createPlayers(PlayerSetupDialogBox[] players) {
-		_players = new PlayerModel[players.length];
-		for(int i = 0; i < players.length; ++i) {
-			PlayerModel model = new PlayerModel(players[i]);
-			_players[i] = model;
-			model.addObserver(_view);
-		}
-		
-		// Sort the array of player models, for convenience
-		// purposes and then add them to the turns list
-		Arrays.sort(_players);
-		for(PlayerModel player : _players) {
-			_turns.add(player);
-		}
-	
-		// Set the grid size for this game to be played on
-		_gridSize = PlayerSetupDialogBox.getGridSize();
-	}
-	*/
-	
 	public void createPlayers() {
 		// TODO - this could be read from config XML
 		_players.clear();
-		_players.add(new PlayerModel("", "White"));
-		_players.add(new PlayerModel("", "Black"));
+		_players.add(new PlayerModel("", Team.PlayerX));
+		_players.add(new PlayerModel("", Team.PlayerY));
 		
 		// TODO - X goes first?
 		for(PlayerModel player : _players) {
@@ -128,8 +93,8 @@ public class BoardGameController implements ActionListener {
 	 * @return The list of available board positions
 	 */
 	public ArrayList<BoardPosition> getAvailableBoardPositions(JPanel root) {
-		
-		ArrayList<BoardPosition> positions = new ArrayList<BoardPosition>();
+		return null;
+		/*ArrayList<BoardPosition> positions = new ArrayList<BoardPosition>();
 		Component[] components = root.getComponents();
 		
 		for(Component component : components) {
@@ -138,7 +103,7 @@ public class BoardGameController implements ActionListener {
 			}
 		}
 		
-		return positions;
+		return positions;*/
 	}
 	
 	/**
@@ -148,6 +113,7 @@ public class BoardGameController implements ActionListener {
 	 * @param currentPosition The current position we are at
 	 * @param allPositions The list of all the positions we are filling up
 	 */
+	/*
 	private void populateNeighbouringPositions(Configuration configuration, BoardPosition currentPosition, ArrayList<BoardPosition> allPositions) {
 		
 		// If the currentPosition is not valid, is locked, or has already been looked at 
@@ -182,6 +148,7 @@ public class BoardGameController implements ActionListener {
 			}
 		}
 	}
+*/
 		
 	/**
 	 * Validates if a position specified is valid for use 
@@ -195,19 +162,16 @@ public class BoardGameController implements ActionListener {
 			return false;
 		}
 		
+		System.out.println("TODO - implement BoardGameController::isValidPosition");
+		return true;
+		
+		/*
 		// Get the player playing
 		PlayerModel player = _turns.peek();
-		if(player != null && player.getTokens() > 0) {
+		if(player != null) {
 			
-			// Get how many tokens are left
-			int tokensSpent = PlayerModel.maxToken() - player.getTokens();
-			if(tokensSpent == 0) { // no moves make
-				return true;
-			} else if(tokensSpent > 0) { // at least one move made
-				
 				boolean isValid = false;
 				
-				// Based on the player configuration, fetch its neighbours accordingly
 				Configuration configuration = player.getPlayerConfiguration();
 				if(configuration == Configuration.COLUMN) {
 					BoardGameView.BoardPosition north = child.getNeighbourTop();
@@ -239,6 +203,7 @@ public class BoardGameController implements ActionListener {
 		
 		GameInstance.getInstance().addLog("Invalid token position...");
 		return false;
+*/
 	}
 	
 	/**
@@ -247,16 +212,7 @@ public class BoardGameController implements ActionListener {
 	 * @return The players token path
 	 */
 	public String getPlayerToken() {
-		return _turns.peek().getTokenPath();
-	}
-	
-	/**
-	 * Gets the current players' player identification tag 
-	 * 
-	 * @return The current players identification
-	 */
-	public int getCurrentPlayerIdentification() {
-		return _turns.peek().getPlayerIdentification();
+		return _turns.peek()._tokenPath;
 	}
 	
 	/**
@@ -264,7 +220,6 @@ public class BoardGameController implements ActionListener {
 	 */
 	private void nextPlayer() {
 		_turns.add(_turns.poll());
-		GameInstance.getInstance().addLog("Player " + _turns.peek().getName() + " is now up");
 	}
 	
 	/**
@@ -279,30 +234,7 @@ public class BoardGameController implements ActionListener {
 		}
 		return done;
 	}
-	
-	/**
-	 * Updates the players tokens in a specific direction
-	 * 
-	 * @param direction 
-	 * 					less than 0 to reduce the tokens by 
-	 * 					greater than 0 to increase the tokens by 1
-	 */
-	public void updatePlayerTokens(int direction) {
-		if(getIsGameOver()) {
-			return;
-		}
 		
-		if(direction < 0) {
-			_turns.peek().removeToken();
-		} else if(direction > 0) {
-			_turns.peek().addToken();
-		}
-		GameInstance.getInstance().addLog("Player " + _turns.peek().getName() + " has " + _turns.peek().getTokens() + " tokens remaining now");
-		if(_turns.peek().getTokens() == 0) {
-			GameInstance.getInstance().addLog("No more tokens remaining for this round...");
-		}
-	}
-	
 	/**
 	 * Gets the size of the grid, easier than getting all the components and 
 	 * getting its size.  If the size changes dynamically then just remove this 
@@ -312,14 +244,6 @@ public class BoardGameController implements ActionListener {
 	 */
 	public int getGridSize() {
 		return _gridSize;
-	}
-	
-	public boolean getPlayerHasAI(int pID) {
-		PlayerModel player = _turns.peek();
-		if(player != null && player.getPlayerIdentification() == pID && player.getHasAI()) {
-			return false;
-		}
-		return true;
 	}
 	
 	/**
@@ -343,30 +267,28 @@ public class BoardGameController implements ActionListener {
 	 * @param root The game panel
 	 */
 	public void performMove(JPanel root) {
-		
+		/*
 		// Make sure the game isn't finished before proceeding
 		if(getIsGameOver()) {
 			return;
 		}
 		
+		
+		
+		
 		PlayerModel player = _turns.peek();
 		if(player != null) {
 			
-			if(player.getHasAI()) {
-				GameInstance.getInstance().addLog("TODO - AI Player Move");
-			} else if(player.getTokens() > 0) {
-				GameInstance.getInstance().addLog("There are still tokens left to play, please use them all up.");
-			} else {	
-			    Component[] components = root.getComponents();
-			    for (int i = 0; i < components.length; i++) {
-			    	if(components[i] instanceof BoardPosition) {
-			    		BoardPosition position = (BoardPosition) components[i];
-			    		if(position.getOwner() == player.getPlayerIdentification()) {
-			    			position.finalize();
-			    		}
-			    	}	
-			    }	
-			    player.resetTokens();
+		    Component[] components = root.getComponents();
+		    for (int i = 0; i < components.length; i++) {
+		    	if(components[i] instanceof BoardPosition) {
+		    		BoardPosition position = (BoardPosition) components[i];
+		    		if(position.getOwner() == player.getPlayerIdentification()) {
+		    			position.finalize();
+		    		}
+		    	}	
+		    }	
+		  
 			    nextPlayer();
 			    ArrayList<BoardPosition> positions = getAvailableBoardPositions(root);
 			    if(positions.size() == 0) {
@@ -387,6 +309,7 @@ public class BoardGameController implements ActionListener {
 			    _turns.peek().refresh();
 			}
 		}
+		*/
 	}
 	
 	/**
@@ -395,36 +318,5 @@ public class BoardGameController implements ActionListener {
 	 */
 	private boolean getIsGameOver() {
 		return _isGameOver;
-	}
-	
-	/**
-	 * Gets if the player is done playing
-	 * 
-	 * @param pID The player id
-	 * 
-	 * @return If the player is done playing
-	 */
-	public boolean isPlayerDone(int pID) {
-		if(getCurrentPlayerIdentification() == pID)
-		{
-			return _turns.peek().getTokens() == 0;
-		}
-		
-		return false;
-	}
-
-	
-	/**
-	 * Gets the tokens of the player
-	 * 
-	 * @param pID The player identification
-	 * 
-	 * @return The number of tokens that the player currently holds
-	 */
-	public int getPlayerTokens(int pID) {
-		if(getCurrentPlayerIdentification() == pID) {
-			return _turns.peek().getTokens(); 
-		}
-		return 0;
 	}
 }
