@@ -26,7 +26,7 @@ public class PlayerModel extends Observable implements Comparable<PlayerModel> {
 	public PlayerModel(String name, Team team) { 
 		_name = name;
 		_team = team;
-		_tokenPath = String.format("/resources/{0}.png", _team._tokenName);
+		_tokenPath = "/resources/" + _team._tokenName + ".png";
 	}
 			
 	
