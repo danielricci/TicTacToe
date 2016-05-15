@@ -87,15 +87,21 @@ public class BoardGameController implements ActionListener {
 	}
 	
 	/**
-	 * Gets the list of available board positions
+	 * Determines if we have a winner based on the currently loaded player and the passed in position
+	 * and if we do, those positions will be returned
 	 * 
-	 * @param root The root of our panels
+	 * @param position The current position that has been played
 	 * 
-	 * @return The list of available board positions
+	 * @return The list of winning positions
 	 */
-	public ArrayList<BoardPosition> getAvailableBoardPositions(JPanel root) {
-		return null;
-		/*ArrayList<BoardPosition> positions = new ArrayList<BoardPosition>();
+	public ArrayList<BoardPosition> isWinningPosition(BoardPosition position) {
+		
+		position.
+		
+		
+		
+		
+		ArrayList<BoardPosition> positions = new ArrayList<BoardPosition>();
 		Component[] components = root.getComponents();
 		
 		for(Component component : components) {
@@ -104,7 +110,7 @@ public class BoardGameController implements ActionListener {
 			}
 		}
 		
-		return positions;*/
+		return positions;
 	}
 	
 	/**
@@ -114,11 +120,8 @@ public class BoardGameController implements ActionListener {
 	 * @param currentPosition The current position we are at
 	 * @param allPositions The list of all the positions we are filling up
 	 */
-	/*
-	private void populateNeighbouringPositions(Configuration configuration, BoardPosition currentPosition, ArrayList<BoardPosition> allPositions) {
-		
-		// If the currentPosition is not valid, is locked, or has already been looked at 
-		// then stop processing
+	private void populateNeighbouringBoardPosition(Configuration configuration, BoardPosition currentPosition, ArrayList<BoardPosition> allPositions) {
+	
 		if(currentPosition == null || currentPosition.isLocked() || allPositions.contains(currentPosition)) {
 			return;
 		}
@@ -149,8 +152,26 @@ public class BoardGameController implements ActionListener {
 			}
 		}
 	}
-*/
+	
+	private void populateNeighbouringRowPositions(BoardPosition currentPosition, ArrayList<BoardPosition> outNeighbouringRowPositions) {
 		
+		if(currentPosition == null || outNeighbouringRowPositions.contains(currentPosition)) {
+			return;
+		}
+		
+		BoardPosition right = currentPosition.getNeighbourRight();
+		BoardPosition left = currentPosition.getNeighbourLeft();
+		if((left != null && !east.isLocked()) || (west != null && !west.isLocked())) {
+			
+			// Add our position
+			allPositions.add(currentPosition);
+			
+			populateNeighbouringPositions(configuration, east, allPositions);
+			populateNeighbouringPositions(configuration, west, allPositions);	
+		}
+	}
+	
+	
 	/**
 	 * Validates if a position specified is valid for use 
 	 * 
@@ -267,13 +288,20 @@ public class BoardGameController implements ActionListener {
 	 * 
 	 * @param root The game panel
 	 */
-	public void performMove(JPanel root) {
+	public void performMove(java.awt.event.InputEvent event) {
+		
 		
 		// Make sure the game isn't finished before proceeding
 		if(getIsGameOver()) {
 			return;
 		}
 	    
+	    ArrayList<BoardPosition> positions = getAvailableBoardPositions(event.getSource());
+	    
+		
+		
+		
+		
 		// Swap to the next player
 		nextPlayer();
 		

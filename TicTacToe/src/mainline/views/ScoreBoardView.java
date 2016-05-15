@@ -25,30 +25,16 @@ import mainline.globals.SpringUtilities;
 @SuppressWarnings("serial")
 public class ScoreBoardView extends JPanel implements Observer {
 
-	/**
-	 * The controller associated to this view
-	 */
-	private ScoreBoardController _controller = null;
-	
-	/**
-	 * Holds the encapsulated spring layout of this view
-	 */
+	private ScoreBoardController _controller = null;	
 	private JPanel _panel = new JPanel(new SpringLayout());
-	
-	/**
-	 * Holds a quick reference table to be able to associate the players information in the view
-	 */
 	private Dictionary<Integer, JLabel> _playersTokens = new Hashtable<Integer, JLabel>();
 	
-	/**
-	 * Constructs a new object of this class
-	 */
 	public ScoreBoardView() {
 		super(new GridLayout());
 	}
 	
-	@Override
-	public void update(Observable obs, Object object) { 
+	
+	@Override public void update(Observable obs, Object object) { 
 		if(object instanceof Integer)
 		{
 			// Update the players tokens on this view w.r.t its pIDß
@@ -63,9 +49,7 @@ public class ScoreBoardView extends JPanel implements Observer {
 		}
 	}
 	
-	/**
-	 * Populates the data of this view
-	 */
+
 	private void populateData() {
 		
 		// Create the headers
