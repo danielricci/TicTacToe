@@ -29,28 +29,12 @@ public class PlayerModel extends Observable implements Comparable<PlayerModel> {
 		_tokenPath = "/resources/" + _team._tokenName + ".png";
 	}
 			
-	
-	/**
-	 * Gets the team name of this player
-	 * 
-	 * @return The team name of this player
-	 */
 	public String getTeamName() {
 		return _team.name();
 	}
-	
-	/**
-	 * Performs an update operation on this player model in terms
-	 * of notifying its listeners
-	 * 
-	 * Note: This uses the identification as a 'soft reference' so 
-	 * you would use this identification with the controller to 
-	 * perform model operations.  This is done such that the view will
-	 * never be coupled to the model.
-	 */
+
 	private void update() {
 		setChanged();
-		//notifyObservers(getPlayerIdentification()); 
 	}
 	
 	public void refresh() {

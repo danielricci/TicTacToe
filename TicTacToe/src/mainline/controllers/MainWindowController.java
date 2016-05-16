@@ -4,12 +4,6 @@ import javax.swing.JFrame;
 
 import mainline.views.MainWindowView;
 
-/**
- * The controller representing the main window view
- * 
- * @author Daniel Ricci <thedanny09@gmail.com>
- * 
- */
 public class MainWindowController {
 
 	private MainWindowView _view = null;

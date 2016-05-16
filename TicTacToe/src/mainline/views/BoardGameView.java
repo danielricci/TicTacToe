@@ -21,11 +21,8 @@ import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.MatteBorder;
 
-import org.omg.CORBA._IDLTypeStub;
-
 import mainline.controllers.BoardGameController;
 
-@SuppressWarnings("serial")
 public final class BoardGameView extends JPanel {
 	
 	private BoardGameController _controller = null;
@@ -49,6 +46,12 @@ public final class BoardGameView extends JPanel {
 	    	addMouseListener(new MouseAdapter() { 
 	    		
 	    		@Override public void mouseEntered(MouseEvent e) {
+	    			
+	    			if(_controller.isGameOver())
+	    			{
+	    				return;
+	    			}
+	    			
 	    			Object source = e.getSource();
 	    			if(source instanceof BoardPosition) {
 	    				BoardPosition position = (BoardPosition)source;
@@ -57,6 +60,12 @@ public final class BoardGameView extends JPanel {
 	    		}
 		
 	    		@Override public void mouseExited(MouseEvent e) {
+	    			
+	    			if(_controller.isGameOver())
+	    			{
+	    				return;
+	    			}
+	    			
 	    			Object source = e.getSource();
 	    			if(source instanceof BoardPosition) {
 	    				BoardPosition position = (BoardPosition)source;

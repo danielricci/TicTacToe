@@ -1,7 +1,9 @@
 package mainline.controllers;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 import javax.swing.JPanel;
@@ -21,7 +23,6 @@ public class BoardGameController {
 	private final ArrayList<PlayerModel> _players = new ArrayList<PlayerModel>();	
 	private final Queue<PlayerModel> _turns = new LinkedList<PlayerModel>();
 			
-	// TODO - This should be removed
 	private BoardGameController() {
 		registerController();
 		addView(new BoardGameView());
@@ -44,77 +45,110 @@ public class BoardGameController {
 	private void registerController() {
 		GameInstance.getInstance().registerController(this);
 	}
+	
+	public boolean isWinningPosition(BoardPosition position, List<BoardPosition> positions) {
 		
-	/**
-	 * Determines if we have a winner based on the currently loaded player and the passed in position
-	 * and if we do, those positions will be returned
-	 * 
-	 * @param position The current position that has been played
-	 * 
-	 * @return The list of winning positions
-	 */
-	public boolean isWinningPosition(BoardPosition position) {
-		return isWinningRow(position) || isWinningColumn(position) || isWinningDiagonal(position);
+		boolean result = 
+			isWinningRow(position, positions) || 
+			isWinningColumn(position, positions) || 
+			isWinningDiagonal(position, positions);
+		
+		positions.add(position);
+		
+		return result;
 	}
 	
 	public boolean isGameOver() { return _isGameOver; }
 	
-	private boolean isWinningRow(BoardPosition position)
-	{
+	private boolean isWinningRow(BoardPosition position, List<BoardPosition> positions) {
+		
+		positions.clear();
 		int rowSize = _gridSize - 1;
 		
-		BoardPosition tempLeft = position;
-		while((tempLeft = tempLeft.getNeighbourLeft()) != null)
+		BoardPosition temp = position;
+		while((temp = temp.getNeighbourLeft()) != null && temp.equals(position))
 		{
-			if(tempLeft.equals(position))
-			{
-				--rowSize;
-			}
+			positions.add(temp);
+			--rowSize;
 		}
 		
-		BoardPosition tempRight = position;
-		while((tempRight = tempRight.getNeighbourRight()) != null)
+		temp = position;
+		while((temp = temp.getNeighbourRight()) != null && temp.equals(position))
 		{
-			if(tempRight.equals(position))
-			{
-				--rowSize;
-			}
+			positions.add(temp);
+			--rowSize;
 		}
 		
 		assert rowSize > -1 : "Winning position invalid, something went wrong with the grid size";
 		return rowSize == 0;
 	}
 	
-	private boolean isWinningColumn(BoardPosition position)
-	{
+	private boolean isWinningColumn(BoardPosition position, List<BoardPosition> positions) {
+		
+		positions.clear();
 		int colSize = _gridSize - 1;
 		
-		BoardPosition tempTop = position;
-		while((tempTop = tempTop.getNeighbourTop()) != null)
+		BoardPosition temp = position;
+		while((temp = temp.getNeighbourTop()) != null && temp.equals(position))
 		{
-			if(tempTop.equals(position))
-			{
-				--colSize;
-			}
+			positions.add(temp);
+			--colSize;
 		}
 		
-		BoardPosition tempBottom = position;
-		while((tempBottom = tempBottom.getNeighbourBottom()) != null)
+		temp = position;
+		while((temp = temp.getNeighbourBottom()) != null && temp.equals(position))
 		{
-			if(tempBottom.equals(position))
-			{
-				--colSize;
-			}
+			positions.add(temp);
+			--colSize;
 		}
 		
 		assert colSize > -1 : "Winning position invalid, something went wrong with the grid size";
 		return colSize == 0;
 	}
 	
-	private boolean isWinningDiagonal(BoardPosition position)
-	{
-		return false;
+	private boolean isWinningDiagonal(BoardPosition position, List<BoardPosition> positions) {
+		
+		positions.clear();
+		int colSize = _gridSize - 1;
+		BoardPosition temp = position;
+		
+		while((temp = temp.getNeighbourTop()) != null && (temp = temp.getNeighbourRight()) != null && temp.equals(position))
+		{
+			positions.add(temp);
+			--colSize;
+		}
+		
+		temp = position;
+		while((temp = temp.getNeighbourBottom()) != null && (temp = temp.getNeighbourLeft()) != null && temp.equals(position))
+		{
+			positions.add(temp);	
+			--colSize;
+		}
+		
+		if(colSize > 0)
+		{
+			positions.clear();
+			colSize = _gridSize - 1;
+			temp = position;
+			
+			while((temp = temp.getNeighbourTop()) != null && (temp = temp.getNeighbourLeft()) != null && temp.equals(position))
+			{
+				positions.add(temp);
+				--colSize;
+			}
+			
+			temp = position;
+			while((temp = temp.getNeighbourBottom()) != null && (temp = temp.getNeighbourRight()) != null && temp.equals(position))
+			{
+				positions.add(temp);	
+				--colSize;
+			}
+		}
+		
+	
+		return colSize == 0;
 	}
+	
 	
 	public String getPlayerToken() { return _turns.peek()._tokenPath; }
 	
@@ -122,22 +156,12 @@ public class BoardGameController {
 		_turns.add(_turns.poll());
 	}
 	
-	/**
-	 * Initiates the dialog component for setting up the players
-	 *
-	 * @return The result of the dialog box
-	 */
 	public void execute() {	
 		_view.render();		
 	}
 		
 	public int getGridSize() { return _gridSize; }
 	
-	/**
-	 * Adds a view to this controller
-	 * 
-	 * @param view The view to add
-	 */
 	private void addView(BoardGameView view) {
 		if(_view == null) {
 			_view = view;
@@ -145,17 +169,21 @@ public class BoardGameController {
 		}
 	}
 
-	/**
-	 * Performs a move based on the tokens that the player has entered
-	 * 
-	 * @param root The game panel
-	 */
 	public void performMove(java.awt.event.InputEvent event) {
-		if(!(_isGameOver || isWinningPosition((BoardPosition)event.getSource()))) {
+
+		List<BoardPosition> winningPositions = new ArrayList<BoardPosition>();
+				
+		if(!(_isGameOver || isWinningPosition((BoardPosition)event.getSource(), winningPositions))) {
 			nextPlayer();
 		} else {
+
 			System.out.println("We have a winner!");
 			_isGameOver = true;
+			
+			for(BoardPosition position : winningPositions)
+			{
+				position.setBackground(Color.RED);
+			}
 		}	
 	}
 }
