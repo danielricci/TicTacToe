@@ -18,25 +18,13 @@ import javax.swing.KeyStroke;
 
 import mainline.controllers.MainWindowController;
 
-/**
- * @author Daniel Ricci <thedanny09@gmail.com>
- *
- * This class initializes the main window environment along with all
- * functionalities attached to it, including but not limited to menu systems
- * and other bindings and handles how the application as a whole should be managed
- */
 @SuppressWarnings("serial")
 public final class GameInstance extends JFrame {
 	
 	private static GameInstance _instance = null;
 
-	//TODO - Off-load this to the controller factory
-	/**
-	 * Holds the list of registered controllers
-	 */
-	private ArrayList<Object> _controllers = new ArrayList<Object>();
-	
-	private JMenuBar _menu = new JMenuBar();
+	private final ArrayList<Object> _controllers = new ArrayList<Object>();
+	private final JMenuBar _menu = new JMenuBar();
 	
 	private GameInstance() {
 		// TODO - put this in config file
@@ -56,26 +44,12 @@ public final class GameInstance extends JFrame {
 		SetWindowedInstanceMenu();
 	}
 	
-	// TODO this needs to be replaced with proper factory
-	/**
-	 * Registers a controller to the game instance
-	 * 
-	 * @param object The object to register
-	 */
 	public void registerController(Object object) {
 		if(!_controllers.contains(object)) {
 			_controllers.add(object);
 		}
 	}
 	
-	// TODO this needs to be replaced with proper factory
-	/**
-	 * Gets the controller that has been registered
-	 * 
-	 * @param type The type of the controller to get
-	 * 
-	 * @return The controller
-	 */
 	public Object getController(String type) {
 		for(Object controller : _controllers) {
 			if(controller.getClass().getName().equals(type)) {
@@ -84,12 +58,7 @@ public final class GameInstance extends JFrame {
 		}
 		return null;
 	}
-	
-	/**
-	 * Gets the the singleton instance of this class
-	 * 
-	 * @return MainWindowInstance
-	 */
+
 	public static GameInstance getInstance() {
 		if(_instance == null) {
 			_instance = new GameInstance();
@@ -97,9 +66,6 @@ public final class GameInstance extends JFrame {
 		return _instance;
 	}
 	
-	/**
-	 * Sets the listener event handlers for this frame
-	 */
 	private void SetWindowedInstanceListeners() {
 		
 		// Needed to manually handle closing of the window
@@ -116,21 +82,12 @@ public final class GameInstance extends JFrame {
 		});
 	}
 	
-	/**
-	 * Sets the window instance menu and all of its
-	 * items
-	 */
 	private void SetWindowedInstanceMenu() {
 		 PopulateFileMenu(_menu);
 		 PopulateOptionsMenu(_menu);
 		 setJMenuBar(_menu);
 	}
 	
-	/**
-	 * Populates the file menu header
-	 * 
-	 * @param menu The menu to attach to
-	 */
 	private void PopulateFileMenu(JMenuBar menu) {
 
 		// Create the file menu 
@@ -140,7 +97,12 @@ public final class GameInstance extends JFrame {
         // Set the event handler
         JMenuItem fileMenuNew = new JMenuItem(new AbstractAction("New") { 
         	
-        	@Override
+        	/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
         	public void actionPerformed(ActionEvent event) {	
         		int response= JOptionPane.showConfirmDialog(null, "Starting a new game will cancel any current game in progress, are you sure?", "New Game", JOptionPane.YES_NO_OPTION);
 				if(response == JOptionPane.YES_OPTION) {
@@ -154,9 +116,9 @@ public final class GameInstance extends JFrame {
 	        		getContentPane().removeAll();
 	        		
 	        		// Create a new controller and start the game
-	        		 MainWindowController _controller = new MainWindowController(getInstance());
-	        		_controller.startGame();
-	        		validate(); 
+	        		MainWindowController controller = new MainWindowController(getInstance());
+	        		controller.startGame();
+        			validate();	
 				}
 			}	
         });

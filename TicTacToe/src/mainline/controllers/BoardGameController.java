@@ -1,8 +1,5 @@
 package mainline.controllers;
 
-import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -15,58 +12,23 @@ import mainline.models.PlayerModel.Team;
 import mainline.views.BoardGameView;
 import mainline.views.BoardGameView.BoardPosition;
 
-/**
- * Represents the controller that holds actions for serving the board game related 
- * queries 
- * 
- * @author Daniel Ricci<thedanny09@gmail.com>
- * 
- */
-public class BoardGameController implements ActionListener {
-	
-	private ArrayList<PlayerModel> _players = new ArrayList<PlayerModel>();	
-	private Queue<PlayerModel> _turns = new LinkedList<PlayerModel>();
-	
-	private boolean _isGameOver = false;
+public class BoardGameController {
 
 	private BoardGameView _view = null;
-	
+	private boolean _isGameOver = false;
 	private int _gridSize = 0;
-		
-	/**
-	 * Constructs a new object of this class
-	 */
+	
+	private final ArrayList<PlayerModel> _players = new ArrayList<PlayerModel>();	
+	private final Queue<PlayerModel> _turns = new LinkedList<PlayerModel>();
+			
+	// TODO - This should be removed
 	private BoardGameController() {
 		registerController();
 		addView(new BoardGameView());
-	}
-	
-	/**
-	 * Construct a new object of this class
-	 * 
-	 * @param source The component to attach this controllers view to 
-	 */
-	public BoardGameController(JPanel source) {
-		this();
-		source.add(_view);
-	}
-	
-	/**
-	 * Registers this controller
-	 */
-	// TODO - remove once we have factory (and all other ones, i wont put a comment in the others unless it cant be done and
-	// just in this one)
-	private void registerController() {
-		GameInstance.getInstance().registerController(this);
-	}
-	
-	public void createPlayers() {
-		// TODO - this could be read from config XML
-		_players.clear();
+		
 		_players.add(new PlayerModel("", Team.PlayerX));
 		_players.add(new PlayerModel("", Team.PlayerY));
 		
-		// TODO - X goes first?
 		for(PlayerModel player : _players) {
 			_turns.add(player);
 		}
@@ -74,18 +36,15 @@ public class BoardGameController implements ActionListener {
 		_gridSize = 3;	
 	}
 	
-	/**
-	 * Registers the views that wish to listen to the player models
-	 * 
-	 * @param controller The controllers we wish to use to register, we grab their views
-	 */
-	// TODO - can't we just pass an IView once it is created
-	public void registerListener(ScoreBoardController controller) {
-		for(PlayerModel model : _players) {
-			model.addObserver(controller.getView());
-		}	
+	public BoardGameController(JPanel source) {
+		this();
+		source.add(_view);
 	}
 	
+	private void registerController() {
+		GameInstance.getInstance().registerController(this);
+	}
+		
 	/**
 	 * Determines if we have a winner based on the currently loaded player and the passed in position
 	 * and if we do, those positions will be returned
@@ -94,152 +53,71 @@ public class BoardGameController implements ActionListener {
 	 * 
 	 * @return The list of winning positions
 	 */
-	public ArrayList<BoardPosition> isWinningPosition(BoardPosition position) {
+	public boolean isWinningPosition(BoardPosition position) {
+		return isWinningRow(position) || isWinningColumn(position) || isWinningDiagonal(position);
+	}
+	
+	public boolean isGameOver() { return _isGameOver; }
+	
+	private boolean isWinningRow(BoardPosition position)
+	{
+		int rowSize = _gridSize - 1;
 		
-		position.
-		
-		
-		
-		
-		ArrayList<BoardPosition> positions = new ArrayList<BoardPosition>();
-		Component[] components = root.getComponents();
-		
-		for(Component component : components) {
-			if(component instanceof BoardPosition) {
-				populateNeighbouringPositions(_turns.peek().getPlayerConfiguration(), (BoardPosition)component, positions);
+		BoardPosition tempLeft = position;
+		while((tempLeft = tempLeft.getNeighbourLeft()) != null)
+		{
+			if(tempLeft.equals(position))
+			{
+				--rowSize;
 			}
 		}
 		
-		return positions;
-	}
-	
-	/**
-	 * Gets the list of direct path associated neighbors based on a board position recursively 
-	 * 
-	 * @param configuration The configuration to go against such as a row or column based schema
-	 * @param currentPosition The current position we are at
-	 * @param allPositions The list of all the positions we are filling up
-	 */
-	private void populateNeighbouringBoardPosition(Configuration configuration, BoardPosition currentPosition, ArrayList<BoardPosition> allPositions) {
-	
-		if(currentPosition == null || currentPosition.isLocked() || allPositions.contains(currentPosition)) {
-			return;
-		}
-		
-		// Based on the configuration try and get the two neighboring 
-		// positions and try to add them
-		if(configuration == Configuration.ROW) {
-			BoardPosition east = currentPosition.getNeighbourRight();
-			BoardPosition west = currentPosition.getNeighbourLeft();
-			if((east != null && !east.isLocked()) || (west != null && !west.isLocked())) {
-				
-				// Add our position
-				allPositions.add(currentPosition);
-				
-				populateNeighbouringPositions(configuration, east, allPositions);
-				populateNeighbouringPositions(configuration, west, allPositions);	
-			}
-		} else if(configuration == Configuration.COLUMN) {
-			BoardPosition north = currentPosition.getNeighbourTop();
-			BoardPosition south = currentPosition.getNeighbourBottom();
-			if((north != null && !north.isLocked()) || (south != null && !south.isLocked())) {
-				
-				// Add our position
-				allPositions.add(currentPosition);
-				
-				populateNeighbouringPositions(configuration, north, allPositions);
-				populateNeighbouringPositions(configuration, south, allPositions);	
+		BoardPosition tempRight = position;
+		while((tempRight = tempRight.getNeighbourRight()) != null)
+		{
+			if(tempRight.equals(position))
+			{
+				--rowSize;
 			}
 		}
+		
+		assert rowSize > -1 : "Winning position invalid, something went wrong with the grid size";
+		return rowSize == 0;
 	}
 	
-	private void populateNeighbouringRowPositions(BoardPosition currentPosition, ArrayList<BoardPosition> outNeighbouringRowPositions) {
+	private boolean isWinningColumn(BoardPosition position)
+	{
+		int colSize = _gridSize - 1;
 		
-		if(currentPosition == null || outNeighbouringRowPositions.contains(currentPosition)) {
-			return;
+		BoardPosition tempTop = position;
+		while((tempTop = tempTop.getNeighbourTop()) != null)
+		{
+			if(tempTop.equals(position))
+			{
+				--colSize;
+			}
 		}
 		
-		BoardPosition right = currentPosition.getNeighbourRight();
-		BoardPosition left = currentPosition.getNeighbourLeft();
-		if((left != null && !east.isLocked()) || (west != null && !west.isLocked())) {
-			
-			// Add our position
-			allPositions.add(currentPosition);
-			
-			populateNeighbouringPositions(configuration, east, allPositions);
-			populateNeighbouringPositions(configuration, west, allPositions);	
+		BoardPosition tempBottom = position;
+		while((tempBottom = tempBottom.getNeighbourBottom()) != null)
+		{
+			if(tempBottom.equals(position))
+			{
+				--colSize;
+			}
 		}
+		
+		assert colSize > -1 : "Winning position invalid, something went wrong with the grid size";
+		return colSize == 0;
 	}
 	
-	
-	/**
-	 * Validates if a position specified is valid for use 
-	 * 
-	 * @param child The position inside of our root
-	 *
-	 * @return If the position is valid
-	 */
-	public boolean isValidPosition(BoardGameView.BoardPosition child) {
-		if(getIsGameOver()) {
-			return false;
-		}
-		
-		System.out.println("TODO - implement BoardGameController::isValidPosition");
-		return true;
-		
-		/*
-		// Get the player playing
-		PlayerModel player = _turns.peek();
-		if(player != null) {
-			
-				boolean isValid = false;
-				
-				Configuration configuration = player.getPlayerConfiguration();
-				if(configuration == Configuration.COLUMN) {
-					BoardGameView.BoardPosition north = child.getNeighbourTop();
-					BoardGameView.BoardPosition south = child.getNeighbourBottom();
-					
-					if(north != null && !north.isLocked() && north.getOwner() == getCurrentPlayerIdentification()) {
-						isValid = true;
-					} 
-					
-					if(south != null && !south.isLocked() && south.getOwner() == getCurrentPlayerIdentification()) {
-						isValid = true;
-					}
-					
-				} else if(configuration == Configuration.ROW) {
-					BoardGameView.BoardPosition east = child.getNeighbourRight();
-					BoardGameView.BoardPosition west = child.getNeighbourLeft();
-	
-					if(east != null && !east.isLocked() && east.getOwner() == getCurrentPlayerIdentification()) {
-						isValid = true;
-					} 
-					
-					if(west != null && !west.isLocked() && west.getOwner() == getCurrentPlayerIdentification()) {
-						isValid = true;
-					}
-				}
-				return isValid;
-			}	
-		}
-		
-		GameInstance.getInstance().addLog("Invalid token position...");
+	private boolean isWinningDiagonal(BoardPosition position)
+	{
 		return false;
-*/
 	}
 	
-	/**
-	 * Gets the path of the players token, used for rendering
-	 * 
-	 * @return The players token path
-	 */
-	public String getPlayerToken() {
-		return _turns.peek()._tokenPath;
-	}
+	public String getPlayerToken() { return _turns.peek()._tokenPath; }
 	
-	/**
-	 * Cycles the players
-	 */
 	private void nextPlayer() {
 		_turns.add(_turns.poll());
 	}
@@ -249,24 +127,11 @@ public class BoardGameController implements ActionListener {
 	 *
 	 * @return The result of the dialog box
 	 */
-	public boolean startPlayerSetup() {	
-		boolean done = _view.showPlayerDialog();
-		if(done) {
-			_view.render();
-		}
-		return done;
+	public void execute() {	
+		_view.render();		
 	}
 		
-	/**
-	 * Gets the size of the grid, easier than getting all the components and 
-	 * getting its size.  If the size changes dynamically then just remove this 
-	 * and get the list of components
-	 * 
-	 * @return The size of the grid in one dimension
-	 */
-	public int getGridSize() {
-		return _gridSize;
-	}
+	public int getGridSize() { return _gridSize; }
 	
 	/**
 	 * Adds a view to this controller
@@ -280,59 +145,17 @@ public class BoardGameController implements ActionListener {
 		}
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent event) { }
-
 	/**
 	 * Performs a move based on the tokens that the player has entered
 	 * 
 	 * @param root The game panel
 	 */
 	public void performMove(java.awt.event.InputEvent event) {
-		
-		
-		// Make sure the game isn't finished before proceeding
-		if(getIsGameOver()) {
-			return;
-		}
-	    
-	    ArrayList<BoardPosition> positions = getAvailableBoardPositions(event.getSource());
-	    
-		
-		
-		
-		
-		// Swap to the next player
-		nextPlayer();
-		
-	    /*
-			    ArrayList<BoardPosition> positions = getAvailableBoardPositions(root);
-			    if(positions.size() == 0) {
-			    	GameInstance.getInstance().addLog("Player " + _turns.peek().getName() + " has lost the game because there are no more moves left");
-			    	GameInstance.getInstance().addLog("Player " + player.getName() + " has won the game");
-			    	JOptionPane.showOptionDialog(
-			    			_view, 
-	    	    		 	"Player " + player.getName() + " has won the game",
-			    			"Game Over", 
-			    			JOptionPane.PLAIN_MESSAGE, 
-			    			JOptionPane.INFORMATION_MESSAGE, 
-			    			null, 
-			    			new Object[]{"OK"}, 
-			    			null);
-					_isGameOver = true;
-			    }
-			    
-			    _turns.peek().refresh();
-			}
-		}
-		*/
-	}
-	
-	/**
-	 * Gets if the game is over
-	 * @return
-	 */
-	private boolean getIsGameOver() {
-		return _isGameOver;
+		if(!(_isGameOver || isWinningPosition((BoardPosition)event.getSource()))) {
+			nextPlayer();
+		} else {
+			System.out.println("We have a winner!");
+			_isGameOver = true;
+		}	
 	}
 }

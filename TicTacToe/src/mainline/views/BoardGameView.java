@@ -13,8 +13,6 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Observer;
-import java.util.Observable;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -23,15 +21,18 @@ import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.MatteBorder;
 
+import org.omg.CORBA._IDLTypeStub;
+
 import mainline.controllers.BoardGameController;
 
 @SuppressWarnings("serial")
-public class BoardGameView extends JPanel implements Observer {
+public final class BoardGameView extends JPanel {
 	
 	private BoardGameController _controller = null;
-	private JPanel _gamePanel = new JPanel(new GridBagLayout());	
 	private JPanel _actionPanel = new JPanel();
 	
+	private final JPanel _gamePanel = new JPanel(new GridBagLayout());	
+		
 	public BoardGameView() {	
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 	}
@@ -65,6 +66,11 @@ public class BoardGameView extends JPanel implements Observer {
 	    		
 	    		@Override public void mouseClicked(MouseEvent e) {
 					
+	    			if(_controller.isGameOver())
+	    			{
+	    				return;
+	    			}
+	    			
 					// Get the board that we selected to give our event handler some context
 					BoardPosition position = (BoardPosition)e.getSource();
 				
@@ -83,25 +89,17 @@ public class BoardGameView extends JPanel implements Observer {
 			});
 		}
 	    
-	    public void addLeft(BoardPosition position) {
-	    	_left = position;
-	    }
-	    public void addTop(BoardPosition position) {
-	    	_top = position;
-	    }
-	    public void addRight(BoardPosition position) {
-	    	_right = position;
-	    }
-	    public void addBottom(BoardPosition position) {
-	    	_bottom = position;
-	    }
+	    public void addLeft(BoardPosition position) { _left = position; }
+	    public void addTop(BoardPosition position) { _top = position; }
+	    public void addRight(BoardPosition position) { _right = position; }
+	    public void addBottom(BoardPosition position) { _bottom = position; }
 	    	    
 	    public BoardPosition getNeighbourTop() { return _top; }
 	    public BoardPosition getNeighbourBottom() { return _bottom; }
 	    public BoardPosition getNeighbourLeft() { return _left; }
 	    public BoardPosition getNeighbourRight() { return _right; }
-	    				
-		@Override protected void paintComponent(Graphics g) {
+
+	    @Override protected void paintComponent(Graphics g) {
 	        super.paintComponent(g);
 	        Graphics2D g2d = (Graphics2D)g;
 	        
@@ -111,23 +109,28 @@ public class BoardGameView extends JPanel implements Observer {
 	        g2d.addRenderingHints(hints);
 	        g2d.drawImage(_image, 16, 16, 32, 32, null, null);       
 		}
-		
+	
 		@Override public Dimension getPreferredSize() {
 		    return new Dimension(64, 64);
-		}		
+		}
+
+		public boolean equals(BoardPosition bp) 
+		{
+			if(bp == null || bp == this)
+			{
+				return false;
+			}
+			
+			return bp._image == _image;
+		}
 	}
 	
-	@Override public void update(Observable obs, Object object)  { }		
-		
 	public void addController(BoardGameController controller) {
 		if(_controller == null) {
 			_controller = controller;
 		}
 	}
 	
-	public BoardGameController getController() { return _controller; }
-	public JPanel getGamePanel() { return _gamePanel; }
-
 	public void render() {
 		// get the grid selection of our user control
 		int gridSize = _controller.getGridSize();
