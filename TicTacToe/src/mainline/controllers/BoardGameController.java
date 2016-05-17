@@ -27,8 +27,8 @@ public class BoardGameController {
 		registerController();
 		addView(new BoardGameView());
 		
-		_players.add(new PlayerModel("", Team.PlayerX));
-		_players.add(new PlayerModel("", Team.PlayerY));
+		_players.add(new PlayerModel(Team.PlayerX));
+		_players.add(new PlayerModel(Team.PlayerY));
 		
 		for(PlayerModel player : _players) {
 			_turns.add(player);
@@ -150,7 +150,8 @@ public class BoardGameController {
 	}
 	
 	
-	public String getPlayerToken() { return _turns.peek()._tokenPath; }
+	public String getPlayerToken() { return _turns.peek().getTokenPath(); }
+	public PlayerModel getCurrentPlayer() { return _turns.peek(); }
 	
 	private void nextPlayer() {
 		_turns.add(_turns.poll());
@@ -177,8 +178,8 @@ public class BoardGameController {
 			nextPlayer();
 		} else {
 
-			System.out.println("We have a winner!");
 			_isGameOver = true;
+			getCurrentPlayer().incrementWins();
 			
 			for(BoardPosition position : winningPositions)
 			{

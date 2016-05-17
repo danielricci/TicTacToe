@@ -1,48 +1,30 @@
 package mainline.models;
 
-import java.awt.Color;
-import java.util.Observable;
-
-public class PlayerModel extends Observable implements Comparable<PlayerModel> {
+public class PlayerModel {
 	
-	public final String _tokenPath;
-	public final Team _team;
-	public final String _name;
+	private final Team _team;
+	private int _score = 0;
 
 	public enum Team {
 		
-		PlayerX(new Color(255, 255, 255), "resources_marker_x"),
-		PlayerY(new Color(0, 0, 0), "resources_marker_o");
+		PlayerX("resources_marker_x"),
+		PlayerY("resources_marker_o");
 		
-		public final Color _team;
 		public final String _tokenName;
+		public final String _tokenPath;
 		
-		private Team(Color team, String tokenName) {
-			_team = team;
+		private Team(String tokenName) {
 			_tokenName = tokenName;
+			_tokenPath = "/resources/" + _tokenName + ".png";
 		}
 	}
 	
-	public PlayerModel(String name, Team team) { 
-		_name = name;
+	public PlayerModel(Team team) { 
 		_team = team;
-		_tokenPath = "/resources/" + _team._tokenName + ".png";
 	}
 			
-	public String getTeamName() {
-		return _team.name();
-	}
-
-	private void update() {
-		setChanged();
-	}
-	
-	public void refresh() {
-		update();
-	}
-
-	@Override
-	public int compareTo(PlayerModel o) {
-		return 0;
-	}	
+	public String getTeamName() { return _team.name(); }
+	public String getTokenPath() { return _team._tokenPath; }
+	public int getWins() { return _score; }
+	public void incrementWins() { ++_score; }
 }
