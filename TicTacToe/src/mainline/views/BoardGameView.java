@@ -1,5 +1,6 @@
 package mainline.views;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -27,13 +28,13 @@ import mainline.controllers.BoardGameController;
 public final class BoardGameView extends JPanel {
 	
 	private BoardGameController _controller = null;
-	private JPanel _actionPanel = new JPanel();
+	//private JPanel _actionPanel = new JPanel();
 	private final ScoreboardView _scoreboardView = new ScoreboardView();
-	
 	private final JPanel _gamePanel = new JPanel(new GridBagLayout());	
 		
 	public BoardGameView() {	
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		_gamePanel.setBackground(Color.GRAY);
 	}
 	
 	public class BoardPosition extends JPanel {
@@ -107,7 +108,7 @@ public final class BoardGameView extends JPanel {
 							
 							if(_controller.isGameOver())
 							{
-								_controller.updateScore(_scoreboardView);
+								_controller.updateScore();
 							}
 							
 							
@@ -237,10 +238,15 @@ public final class BoardGameView extends JPanel {
 			}
 			positions.add(rowPositions);
 		}
-			
+		
+		_controller.updateScore();
+		
 		// Add our panels
 		add(_scoreboardView);
 		add(_gamePanel);
-		add(_actionPanel);	
+	}
+
+	public ScoreboardView getScoreboard() {
+		return _scoreboardView;
 	}
 }

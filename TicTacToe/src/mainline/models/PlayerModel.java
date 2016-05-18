@@ -32,4 +32,8 @@ public class PlayerModel {
 	{
 		return _team.name() + ": " + _score;
 	}
+
+	public void resetWins() {
+		_score = 0;
+	}
 }

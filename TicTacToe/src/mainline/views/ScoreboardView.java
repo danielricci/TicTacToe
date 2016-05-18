@@ -1,5 +1,6 @@
 package mainline.views;
 
+import java.awt.BorderLayout;
 import java.util.ArrayList;
 
 import javax.swing.JLabel;
@@ -21,10 +22,13 @@ public class ScoreboardView extends JPanel {
 	public void update(ArrayList<PlayerModel> _players) {
 		String content = "";
 
-		for(PlayerModel model : _players)
+		for(int i = 0; i < _players.size(); ++i)
 		{
-			content += model.toString() + "<br />";
+			content += _players.get(i).toString();
+			if(i + 1 < _players.size())
+				content += "<br />";
 		}
+		
 		Label.setText("<html>" + content + "</html>");
 	}
 }

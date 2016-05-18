@@ -126,6 +126,8 @@ public final class GameInstance extends JFrame {
 		        		
 		        		// Create a new controller and start the game
 		        		MainWindowController controller = new MainWindowController(getInstance());
+		        		registerController(controller);
+		        		
 		        		controller.startGame();
 		        		
 	        			validate();						
@@ -162,7 +164,11 @@ public final class GameInstance extends JFrame {
         	
         	@Override
 			public void actionPerformed(ActionEvent event) {
-    			System.out.println("TODO - Implement Reset Score");
+        		BoardGameController controller = ((BoardGameController)getController("BoardGameController"));
+        		if(controller != null)
+        		{
+        			controller.resetScore();			
+        		}
 			}	
         });
         optionsMenu.add(optionsMenuRepository);

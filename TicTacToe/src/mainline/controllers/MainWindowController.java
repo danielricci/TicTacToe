@@ -23,4 +23,5 @@ public class MainWindowController {
 			_view.addController(this);
 		}
 	}
+	
 }

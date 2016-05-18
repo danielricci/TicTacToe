@@ -38,6 +38,10 @@ public class BoardGameController {
 		_gridSize = 3;	
 	}
 	
+	public ScoreboardView getScoreboard() {
+		return _view.getScoreboard();
+	}
+	
 	public BoardGameController(JPanel source) {
 		this();
 		source.add(_view);
@@ -199,7 +203,16 @@ public class BoardGameController {
 		_view.reload();
 	}
 
-	public void updateScore(ScoreboardView _scoreboardView) {
-		_scoreboardView.update(_players);
+	public void updateScore() {
+		getScoreboard().update(_players);
+	}
+
+	public void resetScore() {
+		for(PlayerModel model : _players)
+		{
+			model.resetWins();
+		}
+		
+		updateScore();
 	}
 }

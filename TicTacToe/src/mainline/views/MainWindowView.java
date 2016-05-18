@@ -8,7 +8,6 @@ import javax.swing.JPanel;
 import mainline.controllers.BoardGameController;
 import mainline.controllers.MainWindowController;
 
-@SuppressWarnings("serial")
 public final class MainWindowView extends JPanel {
 
 	// TODO - why the hell do we have controllers in our view!
