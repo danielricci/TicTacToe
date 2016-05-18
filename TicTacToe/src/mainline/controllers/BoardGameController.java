@@ -13,6 +13,7 @@ import mainline.models.PlayerModel;
 import mainline.models.PlayerModel.Team;
 import mainline.views.BoardGameView;
 import mainline.views.BoardGameView.BoardPosition;
+import mainline.views.ScoreboardView;
 
 public class BoardGameController {
 
@@ -196,5 +197,9 @@ public class BoardGameController {
 	public void reload() {
 		_isGameOver = false;
 		_view.reload();
+	}
+
+	public void updateScore(ScoreboardView _scoreboardView) {
+		_scoreboardView.update(_players);
 	}
 }

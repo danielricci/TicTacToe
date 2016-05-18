@@ -28,16 +28,19 @@ public final class BoardGameView extends JPanel {
 	
 	private BoardGameController _controller = null;
 	private JPanel _actionPanel = new JPanel();
+	private final ScoreboardView _scoreboardView = new ScoreboardView();
 	
 	private final JPanel _gamePanel = new JPanel(new GridBagLayout());	
 		
 	public BoardGameView() {	
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 	}
-
+	
 	public class BoardPosition extends JPanel {
 
 	    private Image _image = null;
+	    private boolean _locked = false;
+	    
 	    private BoardPosition _left = null;
 	    private BoardPosition _top = null;
 	    private BoardPosition _right = null;
@@ -56,7 +59,17 @@ public final class BoardGameView extends JPanel {
 	    			Object source = e.getSource();
 	    			if(source instanceof BoardPosition) {
 	    				BoardPosition position = (BoardPosition)source;
-	    				position.setBackground(Color.LIGHT_GRAY);	
+	    				
+	    				if(!_locked) {
+	    					position.setBackground(Color.LIGHT_GRAY);
+	    					try {
+								_image = new ImageIcon(position.getClass().getResource(_controller.getPlayerToken())).getImage();
+							} catch (Exception e1) {
+								e1.printStackTrace();
+							}
+	    				}
+    				
+						position.repaint();
 	    			}
 	    		}
 		
@@ -66,12 +79,12 @@ public final class BoardGameView extends JPanel {
 	    			{
 	    				return;
 	    			}
-	    			
-	    			Object source = e.getSource();
-	    			if(source instanceof BoardPosition) {
-	    				BoardPosition position = (BoardPosition)source;
-	    				position.setBackground(UIManager.getColor("Panel.background"));	
-	    			}
+    			
+    				if(!_locked)
+    				{
+    					_image = null;	
+    				}
+    				setBackground(UIManager.getColor("Panel.background"));
 	    		}
 	    		
 	    		@Override public void mouseClicked(MouseEvent e) {
@@ -86,10 +99,18 @@ public final class BoardGameView extends JPanel {
 				
 					// If the player can play and there is no selection yet
 					// then take ownership of the position and put our token
-					if(_image == null) {
+					if(!_locked) {
 						try {
 							_image = new ImageIcon(position.getClass().getResource(_controller.getPlayerToken())).getImage();
 							_controller.performMove(e);
+							position._locked = true;
+							
+							if(_controller.isGameOver())
+							{
+								_controller.updateScore(_scoreboardView);
+							}
+							
+							
 						} catch (Exception e1) {
 							e1.printStackTrace();
 						}
@@ -136,6 +157,7 @@ public final class BoardGameView extends JPanel {
 
 		public void reset() {
 			_image = null;
+			_locked = false;
 			setBackground(UIManager.getColor("Panel.background"));
 			repaint();
 		}
@@ -215,7 +237,9 @@ public final class BoardGameView extends JPanel {
 			}
 			positions.add(rowPositions);
 		}
+			
 		// Add our panels
+		add(_scoreboardView);
 		add(_gamePanel);
 		add(_actionPanel);	
 	}
