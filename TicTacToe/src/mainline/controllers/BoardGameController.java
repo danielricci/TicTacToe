@@ -180,11 +180,21 @@ public class BoardGameController {
 
 			_isGameOver = true;
 			getCurrentPlayer().incrementWins();
+				
+			for(PlayerModel model : _players)
+			{
+				System.out.println(model.toString());
+			}
 			
 			for(BoardPosition position : winningPositions)
 			{
 				position.setBackground(Color.RED);
 			}
 		}	
+	}
+
+	public void reload() {
+		_isGameOver = false;
+		_view.reload();
 	}
 }

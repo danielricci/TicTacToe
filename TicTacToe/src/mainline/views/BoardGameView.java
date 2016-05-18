@@ -1,6 +1,7 @@
 package mainline.views;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -132,11 +133,28 @@ public final class BoardGameView extends JPanel {
 			
 			return bp._image == _image;
 		}
+
+		public void reset() {
+			_image = null;
+			setBackground(UIManager.getColor("Panel.background"));
+			repaint();
+		}
 	}
 	
 	public void addController(BoardGameController controller) {
 		if(_controller == null) {
 			_controller = controller;
+		}
+	}
+	
+	public void reload() {
+		
+		for(Component component : _gamePanel.getComponents())
+		{
+			if(component instanceof BoardPosition)
+			{
+				((BoardPosition)component).reset();
+			}
 		}
 	}
 	

@@ -16,6 +16,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
+import mainline.controllers.BoardGameController;
 import mainline.controllers.MainWindowController;
 
 @SuppressWarnings("serial")
@@ -52,7 +53,8 @@ public final class GameInstance extends JFrame {
 	
 	public Object getController(String type) {
 		for(Object controller : _controllers) {
-			if(controller.getClass().getName().equals(type)) {
+			String split[] = controller.getClass().getName().split("\\.");
+			if(split[split.length - 1].equals(type)) {
 				return controller;
 			}
 		}
@@ -106,19 +108,29 @@ public final class GameInstance extends JFrame {
         	public void actionPerformed(ActionEvent event) {	
         		int response= JOptionPane.showConfirmDialog(null, "Starting a new game will cancel any current game in progress, are you sure?", "New Game", JOptionPane.YES_NO_OPTION);
 				if(response == JOptionPane.YES_OPTION) {
-								
-	        		// Clears all references to our controller that this
-	        		// instance may hold
-	        		_controllers.clear();
-	        		
-	        		// Removes any lingering panels without having to worry
-	        		// about who owns what
-	        		getContentPane().removeAll();
-	        		
-	        		// Create a new controller and start the game
-	        		MainWindowController controller = new MainWindowController(getInstance());
-	        		controller.startGame();
-        			validate();	
+	
+					if(_controllers.size() > 0)
+					{
+						BoardGameController controller = (BoardGameController)getController("BoardGameController");
+						controller.reload();						
+					}
+					else
+					{
+		        		// Clears all references to our controller that this
+		        		// instance may hold
+		        		_controllers.clear();
+		        		
+		        		// Removes any lingering panels without having to worry
+		        		// about who owns what
+		        		getContentPane().removeAll();
+		        		
+		        		// Create a new controller and start the game
+		        		MainWindowController controller = new MainWindowController(getInstance());
+		        		controller.startGame();
+		        		
+	        			validate();						
+					}
+	
 				}
 			}	
         });

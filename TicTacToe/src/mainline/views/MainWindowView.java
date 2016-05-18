@@ -27,7 +27,7 @@ public final class MainWindowView extends JPanel {
 			_mainWindowController = controller;
 		}
 	}	
-	
+		
 	public void render() {
 		_boardGameController = new BoardGameController(_gamePanel);
 		_boardGameController.execute();

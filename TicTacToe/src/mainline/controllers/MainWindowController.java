@@ -16,7 +16,7 @@ public class MainWindowController {
 	public void startGame() {
 		_view.render();
 	}
-
+	
 	private void addView(MainWindowView view) {
 		if(_view == null) {
 			_view = view;
