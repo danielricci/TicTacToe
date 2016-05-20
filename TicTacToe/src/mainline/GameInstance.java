@@ -28,7 +28,6 @@ public final class GameInstance extends JFrame {
 	private final JMenuBar _menu = new JMenuBar();
 	
 	private GameInstance() {
-		// TODO - put this in config file
 		super("Tic-Tac-Toe");
 		setSize(new Dimension(400, 400));
 		setMaximizedBounds(new Rectangle(getSize()));
@@ -99,11 +98,6 @@ public final class GameInstance extends JFrame {
         // Set the event handler
         JMenuItem fileMenuNew = new JMenuItem(new AbstractAction("New") { 
         	
-        	/**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
-
 			@Override
         	public void actionPerformed(ActionEvent event) {	
         		int response= JOptionPane.showConfirmDialog(null, "Starting a new game will cancel any current game in progress, are you sure?", "New Game", JOptionPane.YES_NO_OPTION);
