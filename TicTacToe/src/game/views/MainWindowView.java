@@ -22,15 +22,15 @@
 * IN THE SOFTWARE.
 */
 
-package mainline.views;
+package game.views;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 
 import javax.swing.JPanel;
 
-import mainline.controllers.BoardGameController;
-import mainline.controllers.MainWindowController;
+import game.controllers.BoardGameController;
+import game.controllers.MainWindowController;
 
 @SuppressWarnings("serial")
 public final class MainWindowView extends JPanel {

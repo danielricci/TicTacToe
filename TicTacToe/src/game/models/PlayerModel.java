@@ -22,30 +22,42 @@
 * IN THE SOFTWARE.
 */
 
-package mainline.controllers;
+package game.models;
 
-import javax.swing.JFrame;
-
-import mainline.views.MainWindowView;
-
-public class MainWindowController {
-
-	private MainWindowView _view = null;
+public class PlayerModel {
 	
-	public MainWindowController(JFrame source) {
-		addView(new MainWindowView());
-		source.add(_view);
-	}
-	
-	public void startGame() {
-		_view.render();
-	}
-	
-	private void addView(MainWindowView view) {
-		if(_view == null) {
-			_view = view;
-			_view.addController(this);
+	private final Team _team;
+	private int _score = 0;
+
+	public enum Team {
+		
+		PlayerX("resources_marker_x"),
+		PlayerY("resources_marker_o");
+		
+		public final String _tokenName;
+		public final String _tokenPath;
+		
+		private Team(String tokenName) {
+			_tokenName = tokenName;
+			_tokenPath = "/resources/" + _tokenName + ".png";
 		}
 	}
 	
+	public PlayerModel(Team team) { 
+		_team = team;
+	}
+			
+	public String getTeamName() { return _team.name(); }
+	public String getTokenPath() { return _team._tokenPath; }
+	public int getWins() { return _score; }
+	public void incrementWins() { ++_score; }
+	
+	@Override public String toString()
+	{
+		return _team.name() + ": " + _score;
+	}
+
+	public void resetWins() {
+		_score = 0;
+	}
 }

@@ -22,14 +22,14 @@
 * IN THE SOFTWARE.
 */
 
-package mainline.views;
+package game.views;
 
 import java.util.ArrayList;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import mainline.models.PlayerModel;
+import game.models.PlayerModel;
 
 @SuppressWarnings("serial")
 public class ScoreboardView extends JPanel {

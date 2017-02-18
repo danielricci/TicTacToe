@@ -22,7 +22,7 @@
 * IN THE SOFTWARE.
 */
 
-package mainline.controllers;
+package game.controllers;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -32,12 +32,12 @@ import java.util.Queue;
 
 import javax.swing.JPanel;
 
-import mainline.GameInstance;
-import mainline.models.PlayerModel;
-import mainline.models.PlayerModel.Team;
-import mainline.views.BoardGameView;
-import mainline.views.BoardGameView.BoardPosition;
-import mainline.views.ScoreboardView;
+import game.GameInstance;
+import game.models.PlayerModel;
+import game.models.PlayerModel.Team;
+import game.views.BoardGameView;
+import game.views.ScoreboardView;
+import game.views.BoardGameView.BoardPosition;
 
 public class BoardGameController {
 

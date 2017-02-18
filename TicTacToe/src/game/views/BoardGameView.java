@@ -22,7 +22,7 @@
 * IN THE SOFTWARE.
 */
 
-package mainline.views;
+package game.views;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -46,7 +46,7 @@ import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.MatteBorder;
 
-import mainline.controllers.BoardGameController;
+import game.controllers.BoardGameController;
 
 @SuppressWarnings("serial")
 public final class BoardGameView extends JPanel {
