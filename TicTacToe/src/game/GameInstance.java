@@ -86,7 +86,6 @@ public final class GameInstance extends JFrame {
 	
 	private void SetWindowedInstanceMenu() {
 		 PopulateFileMenu(_menu);
-		 PopulateOptionsMenu(_menu);
 		 setJMenuBar(_menu);
 	}
 	
@@ -101,33 +100,29 @@ public final class GameInstance extends JFrame {
         	
 			@Override
         	public void actionPerformed(ActionEvent event) {	
-        		int response= JOptionPane.showConfirmDialog(null, "Starting a new game will cancel any current game in progress, are you sure?", "New Game", JOptionPane.YES_NO_OPTION);
-				if(response == JOptionPane.YES_OPTION) {
-	
-					if(_controllers.size() > 0)
-					{
-						BoardGameController controller = (BoardGameController)getController("BoardGameController");
-						controller.reload();						
-					}
-					else
-					{
-		        		// Clears all references to our controller that this
-		        		// instance may hold
-		        		_controllers.clear();
-		        		
-		        		// Removes any lingering panels without having to worry
-		        		// about who owns what
-		        		getContentPane().removeAll();
-		        		
-		        		// Create a new controller and start the game
-		        		MainWindowController controller = new MainWindowController(getInstance());
-		        		registerController(controller);
-		        		
-		        		controller.startGame();
-		        		
-	        			validate();						
-					}
-	
+    		
+				if(_controllers.size() > 0)
+				{
+					BoardGameController controller = (BoardGameController)getController("BoardGameController");
+					controller.reload();						
+				}
+				else
+				{
+	        		// Clears all references to our controller that this
+	        		// instance may hold
+	        		_controllers.clear();
+	        		
+	        		// Removes any lingering panels without having to worry
+	        		// about who owns what
+	        		getContentPane().removeAll();
+	        		
+	        		// Create a new controller and start the game
+	        		MainWindowController controller = new MainWindowController(getInstance());
+	        		registerController(controller);
+	        		
+	        		controller.startGame();
+	        		
+        			validate();						
 				}
 			}	
         });
@@ -147,27 +142,5 @@ public final class GameInstance extends JFrame {
 		});
         fileMenu.add(fileMenuExit);
         menu.add(fileMenu);
-	}	
-	
-	private void PopulateOptionsMenu(JMenuBar menu) {
-		// Create the file menu 
-		JMenu optionsMenu = new JMenu("Options");
-		optionsMenu.setMnemonic('O');
-        
-        // Set the event handler
-        JMenuItem optionsMenuRepository = new JMenuItem(new AbstractAction("Reset Score") {
-        	
-        	@Override
-			public void actionPerformed(ActionEvent event) {
-        		BoardGameController controller = ((BoardGameController)getController("BoardGameController"));
-        		if(controller != null)
-        		{
-        			controller.resetScore();			
-        		}
-			}	
-        });
-        optionsMenu.add(optionsMenuRepository);
-        
-        menu.add(optionsMenu);
-	}
+	}		
 }

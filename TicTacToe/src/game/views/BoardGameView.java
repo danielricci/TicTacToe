@@ -38,6 +38,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -52,8 +53,6 @@ import game.controllers.BoardGameController;
 public final class BoardGameView extends JPanel {
 	
 	private BoardGameController _controller = null;
-	//private JPanel _actionPanel = new JPanel();
-	private final ScoreboardView _scoreboardView = new ScoreboardView();
 	private final JPanel _gamePanel = new JPanel(new GridBagLayout());	
 		
 	public BoardGameView() {	
@@ -132,10 +131,12 @@ public final class BoardGameView extends JPanel {
 							
 							if(_controller.isGameOver())
 							{
-								_controller.updateScore();
+								new Timer().schedule(new java.util.TimerTask() {
+									@Override public void run() {
+										_controller.reload();								              
+								    }
+								}, 2000);
 							}
-							
-							
 						} catch (Exception e1) {
 							e1.printStackTrace();
 						}
@@ -205,6 +206,22 @@ public final class BoardGameView extends JPanel {
 		}
 	}
 	
+	public boolean movesLeft() {
+		
+		int positions = _controller.getGridSize() * _controller.getGridSize();
+		for(Component component : _gamePanel.getComponents())
+		{
+			if(component instanceof BoardPosition)
+			{
+				if(((BoardPosition)component)._image != null) {
+					--positions;
+				}
+			}
+		}
+		System.out.println("Moves left is " + positions);
+		return positions > 0;
+	}
+	
 	public void render() {
 		// get the grid selection of our user control
 		int gridSize = _controller.getGridSize();
@@ -263,14 +280,22 @@ public final class BoardGameView extends JPanel {
 			positions.add(rowPositions);
 		}
 		
-		_controller.updateScore();
-		
-		// Add our panels
-		add(_scoreboardView);
 		add(_gamePanel);
 	}
 
-	public ScoreboardView getScoreboard() {
-		return _scoreboardView;
+
+	public void highlightAll() {
+		for(Component component : _gamePanel.getComponents())
+		{
+			if(component instanceof BoardPosition)
+			{
+				component.setBackground(Color.red);
+			}
+		}
+		new Timer().schedule(new java.util.TimerTask() {
+			@Override public void run() {
+				_controller.reload();								              
+		    }
+		}, 2000);
 	}
 }

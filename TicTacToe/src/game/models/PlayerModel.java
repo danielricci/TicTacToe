@@ -27,7 +27,6 @@ package game.models;
 public class PlayerModel {
 	
 	private final Team _team;
-	private int _score = 0;
 
 	public enum Team {
 		
@@ -49,15 +48,4 @@ public class PlayerModel {
 			
 	public String getTeamName() { return _team.name(); }
 	public String getTokenPath() { return _team._tokenPath; }
-	public int getWins() { return _score; }
-	public void incrementWins() { ++_score; }
-	
-	@Override public String toString()
-	{
-		return _team.name() + ": " + _score;
-	}
-
-	public void resetWins() {
-		_score = 0;
-	}
 }

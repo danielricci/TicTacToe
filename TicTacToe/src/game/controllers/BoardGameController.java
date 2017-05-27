@@ -36,7 +36,6 @@ import game.GameInstance;
 import game.models.PlayerModel;
 import game.models.PlayerModel.Team;
 import game.views.BoardGameView;
-import game.views.ScoreboardView;
 import game.views.BoardGameView.BoardPosition;
 
 public class BoardGameController {
@@ -62,8 +61,16 @@ public class BoardGameController {
 		_gridSize = 3;	
 	}
 	
-	public ScoreboardView getScoreboard() {
-		return _view.getScoreboard();
+	private void loadPlayers() {
+		_players.clear();
+		_turns.clear();
+		
+		_players.add(new PlayerModel(Team.PlayerX));
+		_players.add(new PlayerModel(Team.PlayerY));
+		
+		for(PlayerModel player : _players) {
+			_turns.add(player);
+		}
 	}
 	
 	public BoardGameController(JPanel source) {
@@ -202,13 +209,17 @@ public class BoardGameController {
 	public void performMove(java.awt.event.InputEvent event) {
 
 		List<BoardPosition> winningPositions = new ArrayList<BoardPosition>();
-				
+		
 		if(!(_isGameOver || isWinningPosition((BoardPosition)event.getSource(), winningPositions))) {
-			nextPlayer();
+			if(!_view.movesLeft()) {
+				_isGameOver = true;
+				_view.highlightAll();
+			} else {
+				nextPlayer();	
+			}
 		} else {
 
 			_isGameOver = true;
-			getCurrentPlayer().incrementWins();
 				
 			for(PlayerModel model : _players)
 			{
@@ -223,20 +234,8 @@ public class BoardGameController {
 	}
 
 	public void reload() {
+		loadPlayers();
 		_isGameOver = false;
 		_view.reload();
-	}
-
-	public void updateScore() {
-		getScoreboard().update(_players);
-	}
-
-	public void resetScore() {
-		for(PlayerModel model : _players)
-		{
-			model.resetWins();
-		}
-		
-		updateScore();
 	}
 }
