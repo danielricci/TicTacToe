@@ -111,8 +111,9 @@ public final class BoardGameView extends JPanel {
     				setBackground(UIManager.getColor("Panel.background"));
 	    		}
 	    		
-	    		@Override public void mouseClicked(MouseEvent e) {
-					
+	    		@Override
+	    		public void mousePressed(MouseEvent e) {
+	    			
 	    			if(_controller.isGameOver())
 	    			{
 	    				return;
