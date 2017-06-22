@@ -78,7 +78,7 @@ public final class GameInstance extends JFrame {
 			public void windowClosing(WindowEvent event) {
 				int response= JOptionPane.showConfirmDialog(null, "Are you sure that you wish to exit the game?", "Exit Game", JOptionPane.YES_NO_OPTION);
 				if(response == JOptionPane.YES_OPTION) {
-					dispose();
+					System.exit(0);
 				}
 			}
 		});
