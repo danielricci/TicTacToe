@@ -1,5 +1,5 @@
 /**
-* Daniel Ricci <thedanny09@gmail.com>
+* Daniel Ricci <thedanny09@icloud.com>
 *
 * Permission is hereby granted, free of charge, to any person
 * obtaining a copy of this software and associated documentation
@@ -220,12 +220,7 @@ public class BoardGameController {
 		} else {
 
 			_isGameOver = true;
-				
-			for(PlayerModel model : _players)
-			{
-				System.out.println(model.toString());
-			}
-			
+							
 			for(BoardPosition position : winningPositions)
 			{
 				position.setBackground(Color.RED);

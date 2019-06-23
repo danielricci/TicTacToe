@@ -1,5 +1,5 @@
 /**
-* Daniel Ricci <thedanny09@gmail.com>
+* Daniel Ricci <thedanny09@icloud.com>
 *
 * Permission is hereby granted, free of charge, to any person
 * obtaining a copy of this software and associated documentation
@@ -31,21 +31,20 @@ import game.views.MainWindowView;
 public class MainWindowController {
 
 	private MainWindowView _view = null;
-	
+
 	public MainWindowController(JFrame source) {
 		addView(new MainWindowView());
 		source.add(_view);
 	}
-	
+
 	public void startGame() {
 		_view.render();
 	}
-	
+
 	private void addView(MainWindowView view) {
-		if(_view == null) {
+		if (_view == null) {
 			_view = view;
 			_view.addController(this);
 		}
 	}
-	
 }

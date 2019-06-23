@@ -2,10 +2,7 @@ package game;
 
 public class Driver {
 	public static void main(String[] argv) {
-        try {
-        	GameInstance.getInstance().setVisible(true);
-        } catch (Exception exception) {
-        	System.out.println(exception.getStackTrace());
-        }
+    	GameInstance.getInstance().setVisible(true);
+    	GameInstance.getInstance().newGame();
     }
 }

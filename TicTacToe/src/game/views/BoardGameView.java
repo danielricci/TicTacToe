@@ -1,5 +1,5 @@
 /**
-* Daniel Ricci <thedanny09@gmail.com>
+* Daniel Ricci <thedanny09@icloud.com>
 *
 * Permission is hereby granted, free of charge, to any person
 * obtaining a copy of this software and associated documentation
@@ -49,7 +49,6 @@ import javax.swing.border.MatteBorder;
 
 import game.controllers.BoardGameController;
 
-@SuppressWarnings("serial")
 public final class BoardGameView extends JPanel {
 	
 	private BoardGameController _controller = null;
@@ -219,7 +218,6 @@ public final class BoardGameView extends JPanel {
 				}
 			}
 		}
-		System.out.println("Moves left is " + positions);
 		return positions > 0;
 	}
 	
