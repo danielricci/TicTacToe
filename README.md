@@ -2,4 +2,4 @@
 
 Two-Player Tic-Tac-Toe game.
 
-![](readme.gif)
+![](images/readme.gif)
